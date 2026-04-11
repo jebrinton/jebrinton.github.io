@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About &mdash; Jacob Brinton</title>
+  <meta name="description" content="About Jacob Brinton — interpretability researcher, crossword enthusiast, ski bum.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav__logo">Jacob Brinton</a>
+    <ul class="nav__links">
+      <li><a href="/about.html" class="active">About</a></li>
+      <li><a href="/photography.html">Photography</a></li>
+      <li><a href="/hobbies.html">Hobbies</a></li>
+      <li><a href="/resume.html">Resume</a></li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav__overlay" aria-hidden="true">
+    <a href="/">Home</a>
+    <a href="/about.html">About</a>
+    <a href="/photography.html">Photography</a>
+    <a href="/hobbies.html">Hobbies</a>
+    <a href="/resume.html">Resume</a>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <h1>About</h1>
+    <p>The short version, the long version, and everything in between.</p>
+  </div>
+
+  <!-- BIO SECTION -->
+  <section class="section">
+    <div class="section__inner">
+      <div class="two-col" data-aos="fade-up">
+        <div class="two-col__img">
+          <!-- Replace with your photo -->
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:var(--text-sm);text-align:center;padding:2rem;">
+            Your photo here<br><small>(drop an image in assets/images/)</small>
+          </div>
+        </div>
+        <div>
+          <h2 style="margin-bottom:var(--sp-3);">Hey, I'm Jacob.</h2>
+          <p>
+            I spend most of my time thinking about interpretability &mdash; how we can actually understand what's going on inside neural networks, rather than just hoping they're doing the right thing. I find it endlessly fascinating that we've built systems more complex than we can explain, and I want to change that.
+          </p>
+          <p>
+            When I'm not poking at model internals, I'm probably doing crossword puzzles (the NYT variety, obviously), skiing somewhere steep, or arguing about linguistics in a way that makes people slowly back away.
+          </p>
+          <p>
+            I'm also weirdly passionate about geography, deeply interested in questions of religion and meaning, and I have a well-documented obsession with the color green. (Look around &mdash; you'll notice.)
+          </p>
+          <p>
+            I try to hold my opinions loosely and update when I'm wrong. Hence the whole "redteaming my wrong opinions" thing &mdash; it's less of a brand and more of a lifestyle.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURRENTLY -->
+  <section class="section section--alt">
+    <div class="section__inner">
+      <h2 class="section__title" data-aos="fade-up">Currently</h2>
+      <div class="cards">
+        <div class="card" data-aos="fade-up">
+          <div class="card__icon">&#x1f52c;</div>
+          <h3 class="card__title">Researching</h3>
+          <p class="card__desc">Mechanistic interpretability &mdash; understanding the circuits and features that drive model behavior.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+          <div class="card__icon">&#x1f4da;</div>
+          <h3 class="card__title">Reading</h3>
+          <p class="card__desc">Add what you're currently reading here.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+          <div class="card__icon">&#x1f914;</div>
+          <h3 class="card__title">Obsessing over</h3>
+          <p class="card__desc">Add your current obsession here &mdash; a rabbit hole you've fallen into.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__socials">
+        <a href="https://github.com/jebrinton" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/jebrinton" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://www.lesswrong.com/users/jebrinton" target="_blank" rel="noopener" aria-label="LessWrong">
+          <svg viewBox="0 0 24 24"><path d="M4 3h16v2H4V3zm0 4h10v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2zm0 4h16v2H4v-2z"/></svg>
+        </a>
+        <a href="https://twitter.com/jebrinton" target="_blank" rel="noopener" aria-label="Twitter">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+      <div class="footer__email" title="Click to reveal, or try copying...">
+        <span>jbrin@bu.edu</span>
+        <div class="footer__email-toast"></div>
+      </div>
+      <p class="footer__copy">&copy; 2026 Jacob Brinton</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script src="js/nav.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      AOS.init({ duration: 700, once: true, offset: 80 });
+    });
+  </script>
+</body>
+</html>
