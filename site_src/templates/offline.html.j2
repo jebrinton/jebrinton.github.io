@@ -1,0 +1,41 @@
+{% extends "_base.html.j2" %}
+
+{% block extra_css %}<link rel="stylesheet" href="css/offline.css">{% endblock %}
+
+{% block hero_extra %}
+<div class="questdex-counter" aria-label="Collection progress">
+  <span class="questdex-counter__dot" aria-hidden="true"></span>
+  <span class="questdex-counter__text">{{ hero.counter.label }}&nbsp;&nbsp;<span id="questdex-collected">0</span>&thinsp;/&thinsp;{{ cards | length }}</span>
+</div>
+{% endblock %}
+
+{% block content %}
+{# Inline SVG symbol for Gemini-style hyperbolic 4-point star (y = ±1/x). #}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="gem-star" viewBox="0 0 24 24">
+      <path d="M12 0 Q 13 11 24 12 Q 13 13 12 24 Q 11 13 0 12 Q 11 11 12 0 Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<section class="questdex" aria-labelledby="questdex-heading">
+  <div class="questdex__inner">
+    <h2 id="questdex-heading" class="sr-only">Offline card collection</h2>
+
+    <div class="questdex-grid" id="questdex-grid">
+      {% for card in cards %}
+      {% include "_offline_card.html.j2" %}
+      {% endfor %}
+
+      {% if hidden_card %}
+      {% set card = hidden_card %}
+      {% set hidden = true %}
+      {% include "_offline_card.html.j2" %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}<script src="js/offline.js" defer></script>{% endblock %}

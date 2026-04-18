@@ -1,0 +1,38 @@
+{# Base page shell: head boilerplate, nav, hero, content block, footer. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} &mdash; Jacob Brinton</title>
+  <meta name="description" content="{{ page.meta_description }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="css/style.css">
+  {% block extra_css %}{% endblock %}
+  <!-- AUTO-GENERATED from site_src/content/{{ source_name }}.yml by site_src/build.py. Do not hand-edit. -->
+</head>
+<body>
+  {% include "_nav.html.j2" %}
+
+  <div class="page-hero">
+    <h1>{{ hero.title }}</h1>
+    {% block hero_extra %}{% endblock %}
+  </div>
+
+  {% block content %}{% endblock %}
+
+  {% include "_footer.html.j2" %}
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script src="js/nav.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      AOS.init({ duration: 700, once: true, offset: 80 });
+    });
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

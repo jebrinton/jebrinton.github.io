@@ -1,0 +1,52 @@
+# site_src/content/about.yml
+# Source of truth for the About page. Edit here, then run:
+#   python site_src/build.py
+# DO NOT hand-edit about.html directly.
+
+page:
+  title: About
+  meta_description: About Jacob Brinton — interpretability researcher, crossword enthusiast, skier.
+
+hero:
+  title: About
+
+portrait:
+  # Set src when the photo exists; leave null to render the placeholder block.
+  src: null
+  alt: Jacob Brinton
+  todo: assets/images/portrait.jpg
+
+bio:
+  heading: "Hey, I'm Jacob."
+  paragraphs:
+    - >
+      Work in progress
+    - >
+      More works in progress
+
+# Migrated from bio.md — render as a small inline block on About.
+working_on:
+  - AI safety fieldbuilding
+  - mechanistic interpretability of LLM translation mechanisms
+  - tamper resistance research
+  - understanding how models generalize across languages
+  - helping run the team at buaisa.org
+
+past_life:
+  - raced cross-country mountain bikes
+  - participated in film competitions
+  - worked on satellites
+
+enjoy:
+  - staring up at the stars in Southern Utah
+  - losing things that I had moments ago
+
+# Languages-in-flight, small fingerprint in the page.
+languages:
+  - "Türkçe öğrenmek üzerinde çalışıyorum"
+  - "Me encanta hablar español"
+
+# "Currently" block — disabled until we design it together.
+currently:
+  enabled: false
+  cards: []

@@ -1,0 +1,201 @@
+# site_src/content/offline.yml
+# Source of truth for the Offline page. Edit here, then run:
+#   python site_src/build.py
+# DO NOT hand-edit offline.html directly.
+
+page:
+  title: Offline
+  meta_description: What Jacob Brinton does away from the laptop — skiing, mountain biking, hockey, crosswords, geography, languages, meaning, and the color green.
+
+hero:
+  title: Offline
+  # no subtitle — just the counter below
+  counter:
+    label: COLLECTED
+
+# Card-type palette (each type_color maps to a CSS class `cq-card__type--<value>`)
+# Reserved: chromatic (legendary only), meta (hidden card)
+# Types defined in css/offline.css
+
+cards:
+  - id: skiing
+    number: "001"
+    name: Skiing
+    type: ALPINE
+    type_color: alpine
+    stars: 5
+    stats:
+      - { label: Terrain,   value: Snowy }
+      - { label: Home,      value: Wasatch }
+      - { label: Style,     value: Steep & Deep }
+    flavor: >
+      Alta + Snowbird.
+    art:
+      kind: photo
+      src: assets/nature/wasatch_snowy_peak_clouds.jpeg
+      alt: Wasatch peaks under moving clouds — placeholder
+      todo: assets/images/me/skiing.jpg
+    back:
+      quote: Cold air, quiet head.
+      links: []
+
+  - id: mtb
+    number: "002"
+    name: Mountain Biking
+    type: SINGLETRACK
+    type_color: singletrack
+    stars: 4
+    stats:
+      - { label: Style,      value: XC }
+      - { label: Past life,  value: Racer }
+      - { label: Philosophy, value: Harder line }
+    flavor: >
+      Many, many bike fixes.
+    art:
+      kind: photo
+      src: assets/nature/timpanogos_wildflowers.jpeg
+      alt: Wildflowers on Timpanogos — placeholder
+      todo: assets/images/me/mtb.jpg
+    back:
+      quote: Gravity works. Try it.
+      links: []
+
+  - id: hockey
+    number: "003"
+    name: Hockey
+    type: ICE
+    type_color: ice
+    stars: 3
+    stats:
+      - { label: League,     value: Beer }
+      - { label: Position,   value: Wing }
+      - { label: Investment, value: Embarrassing }
+    flavor: >
+      Hockey.
+    art:
+      kind: symbol
+      glyph: "🏒"
+      todo: assets/images/me/hockey.jpg
+    back:
+      quote: I used to live in Wisconsin.
+      links: []
+
+  - id: crosswords
+    number: "004"
+    name: Crosswords
+    type: LOGIC
+    type_color: logic
+    stars: 4
+    stats:
+      - { label: Grid,        value: NYT }
+      - { label: Fav day,     value: Thursday }
+      - { label: Constructor, value: In progress }
+    flavor: >
+      Words are great.
+    art:
+      kind: symbol
+      glyph: "🧩"
+    back:
+      quote: The puzzle is a mirror. Usually I don't like what it shows me.
+      links: []
+
+  - id: geography
+    number: "005"
+    name: Geography
+    type: WORLD
+    type_color: world
+    stars: 5
+    stats:
+      - { label: Blank map,  value: Complete }
+      - { label: GeoGuessr,  value: Elo problem }
+      - { label: Fav region, value: Central Asia }
+    flavor: >
+      Maps explain more of the world than most things people argue about.
+    art:
+      kind: photo
+      src: assets/nature/istanbul_bridge_minaret.jpeg
+      alt: Istanbul bridge and minaret
+    back:
+      quote: Every border is an argument someone won.
+      links: []
+
+  - id: languages
+    number: "006"
+    name: Languages
+    type: LINGUA
+    type_color: lingua
+    stars: 3
+    stats:
+      - { label: Fluent,       value: Spanish }
+      - { label: Learning,     value: Türkçe }
+      - { label: Argues about, value: Syntax }
+    flavor: >
+      Spanish is home. Türkçe is the current project.
+    art:
+      kind: photo
+      src: assets/nature/segovia_cathedral_hillside.jpeg
+      alt: Segovia cathedral on a hillside
+    back:
+      quote: Grammar is philosophy you can test.
+      links: []
+
+  - id: religion
+    number: "007"
+    name: Religion & Meaning
+    type: FAITH
+    type_color: faith
+    stars: 4
+    stats:
+      - { label: Mode,     value: Conversation }
+      - { label: Posture,  value: Loose hold }
+      - { label: Question, value: Why anything }
+    flavor: >
+      The big questions are the interesting ones. Faith, meaning, what we owe
+      each other. Not as debate, as conversation.
+    art:
+      kind: photo
+      src: assets/nature/rome_basilica_interior.jpeg
+      alt: Rome basilica interior
+    back:
+      quote: I don't know. I'm still asking.
+      links: []
+
+  - id: green
+    number: "008"
+    name: The Color Green
+    type: CHROMATIC
+    type_color: chromatic
+    legendary: true
+    stars: 5
+    stats:
+      - { label: Hex,             value: "#2a9d8f" }
+      - { label: Coverage,        value: Total }
+      - { label: Questions taken, value: "0" }
+    flavor: >
+      Green: the color of growth, forests.
+    art:
+      kind: legendary   # pure color panel, no image
+    back:
+      quote: The shade changes. The answer does not.
+      links: []
+
+# Hidden card — unlocks after every one of the above has been flipped at least once.
+hidden_card:
+  id: three_am
+  number: "???"
+  name: Debugging at 3am
+  type: META
+  type_color: meta
+  stars: 2
+  stats:
+    - { label: State,      value: Questionable }
+    - { label: Fuel,       value: Glasses of Milk }
+    - { label: Usefulness, value: Debatable }
+  flavor: >
+    The hobby that pays for the others. Allegedly.
+  art:
+    kind: symbol
+    glyph: "◉"
+  back:
+    quote: You found me. Go outside.
+    links: []

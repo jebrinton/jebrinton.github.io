@@ -1,0 +1,98 @@
+      <!-- Contact -->
+      <div class="resume-section">
+        <h3>Contact</h3>
+        <div class="resume-entry">
+          <ul>
+            <li>{{ data.personal.location }} &middot; <a href="mailto:{{ data.personal.email }}">{{ data.personal.email }}</a></li>
+            <li><a href="{{ data.personal.linkedin_url }}" target="_blank" rel="noopener">{{ data.personal.linkedin_label }}</a> &middot; <a href="{{ data.personal.github_url }}" target="_blank" rel="noopener">{{ data.personal.github_label }}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="resume-section">
+        <h3>Education</h3>
+        {% for edu in data.education | only(target) %}
+        <div class="resume-entry">
+          <div class="resume-entry__header">
+            <span class="resume-entry__title">{{ edu.institution }}</span>
+            <span class="resume-entry__date">{{ edu.dates | html }}</span>
+          </div>
+          {% if edu.get('degree') or edu.get('detail') %}
+          <div class="resume-entry__org">
+            {%- if edu.get('degree') %}{{ edu.degree | html }}{% endif -%}
+            {%- if edu.get('degree') and edu.get('detail') %} &mdash; {% endif -%}
+            {%- if edu.get('detail') %}{{ edu.detail | html }}{% endif -%}
+          </div>
+          {% endif %}
+          {% if edu.get('coursework') %}
+          <ul>
+            <li><strong>{{ edu.coursework.label }}:</strong> {{ edu.coursework.text | html }}{% if edu.coursework.get('suffix') %} <small>{{ edu.coursework.suffix | html }}</small>{% endif %}</li>
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Experience -->
+      <div class="resume-section">
+        <h3>Experience</h3>
+        {% for exp in data.experience | only(target) %}
+        <div class="resume-entry">
+          <div class="resume-entry__header">
+            <span class="resume-entry__title">{{ exp.title | html }}</span>
+            <span class="resume-entry__date">{{ exp.dates | html }}</span>
+          </div>
+          {% if exp.get('org') or exp.get('location') %}
+          <div class="resume-entry__org">
+            {%- if exp.get('org') %}{{ exp.org | html }}{% endif -%}
+            {%- if exp.get('org') and exp.get('location') %} &middot; {% endif -%}
+            {%- if exp.get('location') %}{{ exp.location | html }}{% endif -%}
+          </div>
+          {% endif %}
+          {% set exp_bullets = exp.get('bullets', []) | only(target) %}
+          {% if exp_bullets %}
+          <ul>
+            {% for b in exp_bullets %}
+            <li>{{ b.text | html }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Projects -->
+      <div class="resume-section">
+        <h3>Projects &amp; Publications</h3>
+        {% for proj in data.projects | only(target) %}
+        <div class="resume-entry">
+          <div class="resume-entry__header">
+            <span class="resume-entry__title">{{ proj.title | html }}</span>
+            <span class="resume-entry__date">{{ proj.dates | html }}</span>
+          </div>
+          {% if proj.get('venue') %}
+          <div class="resume-entry__org">{% if proj.get('doi') %}<a href="https://doi.org/{{ proj.doi }}" target="_blank" rel="noopener">{{ proj.venue | html }}</a>{% else %}{{ proj.venue | html }}{% endif %}</div>
+          {% endif %}
+          {% set proj_bullets = proj.get('bullets', []) | only(target) %}
+          {% if proj_bullets %}
+          <ul>
+            {% for b in proj_bullets %}
+            <li>{{ b.text | html }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Skills -->
+      <div class="resume-section">
+        <h3>Skills</h3>
+        <div class="resume-entry">
+          <ul>
+            <li><strong>Technical:</strong> {{ data.skills.technical | html }}.</li>
+            <li><strong>Languages:</strong> {{ data.skills.languages | html }}.</li>
+          </ul>
+        </div>
+      </div>

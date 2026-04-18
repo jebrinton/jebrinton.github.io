@@ -17,3 +17,11 @@ node_modules/
 
 # Build artifacts
 *.log
+*.aux
+*.out
+
+# Raw photo originals (too large for a Pages repo)
+_raw_photos/
+
+# Local working notes / seed prompts
+seed_prompts/

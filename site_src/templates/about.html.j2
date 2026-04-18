@@ -1,0 +1,84 @@
+{% extends "_base.html.j2" %}
+
+{% block content %}
+<!-- BIO SECTION -->
+<section class="section">
+  <div class="section__inner">
+    <div class="two-col" data-aos="fade-up">
+      <div class="two-col__img">
+        {% if portrait.src %}
+        <img src="{{ portrait.src }}" alt="{{ portrait.alt }}">
+        {% else %}
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:var(--text-sm);text-align:center;padding:2rem;">
+          Your photo here<br><small>(drop an image in {{ portrait.todo }})</small>
+        </div>
+        {% endif %}
+      </div>
+      <div>
+        <h2 style="margin-bottom:var(--sp-3);">{{ bio.heading }}</h2>
+        {% for p in bio.paragraphs %}
+        <p>{{ p | trim }}</p>
+        {% endfor %}
+
+        {% if languages %}
+        <p style="font-style:italic;color:var(--text-muted);margin-top:var(--sp-3);">
+          {% for line in languages %}{{ line }}{% if not loop.last %} &middot; {% endif %}{% endfor %}
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{# "Working on" / "Previously" / "Enjoy" — small, factual strips. Rendered only if populated. #}
+{% if working_on or past_life or enjoy %}
+<section class="section section--alt">
+  <div class="section__inner">
+    <div class="about__strips">
+      {% if working_on %}
+      <div class="about__strip" data-aos="fade-up">
+        <h3 class="about__strip-title">Working on</h3>
+        <ul class="about__strip-list">
+          {% for item in working_on %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if past_life %}
+      <div class="about__strip" data-aos="fade-up" data-aos-delay="100">
+        <h3 class="about__strip-title">Previously</h3>
+        <ul class="about__strip-list">
+          {% for item in past_life %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if enjoy %}
+      <div class="about__strip" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="about__strip-title">Enjoy</h3>
+        <ul class="about__strip-list">
+          {% for item in enjoy %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# "Currently" block — TODO: design with user. Renders only when enabled. #}
+{% if currently and currently.enabled and currently.cards %}
+<section class="section">
+  <div class="section__inner">
+    <h2 class="section__title" data-aos="fade-up">Currently</h2>
+    <div class="cards">
+      {% for c in currently.cards %}
+      <div class="card" data-aos="fade-up"{% if loop.index0 %} data-aos-delay="{{ loop.index0 * 100 }}"{% endif %}>
+        <div class="card__icon">{{ c.icon }}</div>
+        <h3 class="card__title">{{ c.title }}</h3>
+        <p class="card__desc">{{ c.desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

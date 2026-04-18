@@ -1,0 +1,231 @@
+# =====================================================================
+# data.yml — SOURCE OF TRUTH for resume, CV, and site HTML resume fragment.
+#
+# HOW TO EDIT:
+#   - Bullet / section text is written in LaTeX-flavored plain text:
+#       en-dash = `--`, em-dash = `---`, ampersand = `\&`, percent = `\%`,
+#       thousands sep = `{,}`, explicit space = `\;`, italics = `\textit{...}`,
+#       bold = `\textbf{...}`, links = `\href{url}{anchor}`.
+#     The build's HTML filter converts these to HTML equivalents for the
+#     site fragment. Anything it can't convert will pass through verbatim;
+#     keep content simple and the filter will stay boring.
+#
+#   - Every entry and every bullet has a `targets:` list. Valid values:
+#       [resume]     show on resume only
+#       [cv]         show on CV only
+#       [resume, cv] show on both (default behavior if omitted)
+#     This is how resume/CV divergence is managed. When in doubt, use
+#     [resume, cv] and let brevity happen at render time.
+#
+#   - After ANY edit here:
+#       1. python resume_src/build.py
+#       2. cd assets && pdflatex -interaction=nonstopmode resume.tex && pdflatex -interaction=nonstopmode cv.tex
+#       3. Open both PDFs and the updated resume.html, verify they look sane.
+#     See CLAUDE.md at repo root for the full workflow.
+# =====================================================================
+
+personal:
+  name: "Jacob E. Brinton"
+  email: "jbrin@bu.edu"
+  website_url: "https://jebrinton.github.io"
+  website_label: "jebrinton.github.io"
+  linkedin_url: "https://linkedin.com/in/jbrinton"
+  linkedin_label: "linkedin.com/in/jbrinton"
+  github_url: "https://github.com/jebrinton"
+  github_label: "github.com/jebrinton"
+  location: "Boston, Massachusetts"
+  # Phone intentionally omitted from resume, CV, and site HTML (decided 2026-04-18).
+  # LessWrong profile kept on site footer only, not in contact line.
+
+# ---------------------------------------------------------------------
+# Education
+# ---------------------------------------------------------------------
+education:
+  - institution: "Boston University"
+    dates: "Expected May 2026"
+    degree: "B.A./M.S. in Mathematics and Computer Science"
+    detail: "Major GPA: 4.0"
+    coursework:
+      label: "Relevant coursework"
+      text: "Interpretable Machine Learning, Directed Study in LLM Translation Interpretability, Principles of ML, Natural Language Processing, Stochastic Processes, Causal Inference*, Abstract Algebra, Advanced Algorithms, Intro to AI, Foundations of Mathematics*, Logic and Programming Languages*, Discrete Mathematics"
+      suffix: "(* in progress)"
+    targets: [resume, cv]
+
+  - institution: "Utah State University"
+    dates: "Aug 2022 -- May 2023"
+    detail: "GPA: 4.0"
+    coursework:
+      label: "Relevant coursework"
+      text: "Honors Calculus II \\& III, Chemistry, Physics, Programming in C, CAD"
+    targets: [resume, cv]
+
+# ---------------------------------------------------------------------
+# Experience
+# ---------------------------------------------------------------------
+experience:
+  # TODO: rewrite bullets. Red-team flagged current text as unverifiable
+  # ("1{,}000+ students reached" needs a defensible denominator; "120 applicants"
+  # without outcomes is puff). User to provide final version — see CLAUDE.md
+  # positioning guidance (concrete numbers with denominators, named placements).
+  - title: "Executive Director"
+    org: "Boston University Artificial Intelligence Safety Association"
+    location: "Boston, MA"
+    dates: "May 2025 -- Present"
+    bullets:
+      - text: "Grew club from 4--6 person avg. attendance to 120 total applicants across 6 intro cohorts and 2 upskilling programs."
+        targets: [resume, cv]
+      - text: "Delivered tailored presentations on AI safety to over a dozen lectures, reaching a total enrollment of 1{,}000+ students."
+        targets: [resume, cv]
+      - text: "Organized guest speakers and intra-university partnerships, putting on events with 90+ attendees."
+        targets: [resume, cv]
+      - text: "Developed technical AI safety curriculum and presentations on goal misgeneralization, interpretability, and evaluations."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  # TODO: REWRITE_PENDING. User is finalizing framing of the MARS research;
+  # current bullet is a placeholder that names the research direction at a
+  # high level only. Replace with concrete method / model / attack / stage
+  # once framing lands. Keep mentor attribution.
+  - title: "Research Fellow"
+    org: "Mentorship for Alignment Researchers (CAISH)"
+    location: "Cambridge, UK"
+    dates: "Dec 2025 -- Present"
+    bullets:
+      - text: "Developing tamper-resistance methods that constrain harmful-capability transfer across behavior categories, with an RL training component; mentored by Prof. Zhijing Jin."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  - title: "Teaching Fellow, Course Assistant"
+    org: "Boston University College of Arts and Sciences"
+    location: "Boston, MA"
+    dates: "Aug 2024 -- Present"
+    bullets:
+      - text: "Guided labs on computer architecture, operating systems, memory management, concurrency, and networking."
+        targets: [resume, cv]
+      - text: "Led office hours, debugging issues in Jade circuitry, x86 Assembly, Git, and C, along with calculus and linear algebra."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  # NOTE: UROP removed as a separate experience entry (the substance was the
+  # Noisy Translation Channels summer work, which has its own Projects entry).
+  # UROP is now recorded under Awards (CV only).
+
+  - title: "Machine Learning Research Intern"
+    org: "Montana State University NSF REU"
+    location: "Bozeman, MT"
+    dates: "May 2023 -- Aug 2023"
+    bullets:
+      - text: "Designed and conducted drone-flight field experiments, gathering over 3 hours of audio."
+        targets: [resume, cv]
+      - text: "Cleaned 1M audio frames in MATLAB; used scikit-learn for clustering, dimension reduction, and signal processing."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  - title: "Student Researcher"
+    org: "Direct Laboratory"
+    location: "Logan, UT"
+    dates: "Dec 2022 -- May 2023"
+    bullets:
+      - text: "Leveraged ROS to write Python-based publishers and subscribers for robot pathfinding and camera movement."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  - title: "Ground Station Subteam Member"
+    org: "Get Away Special Satellite Team"
+    location: "Logan, UT"
+    dates: "Sep 2022 -- May 2023"
+    bullets:
+      - text: "3D-modeled and manufactured prototypes in SolidWorks for an S-band patch antenna connection and coverglass frame."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+# ---------------------------------------------------------------------
+# Projects & Publications
+# ---------------------------------------------------------------------
+projects:
+  # TODO: rewrite to lead with the finding. User's one-line thesis:
+  # "LLM translation is mostly language modeling" — i.e., translation quality
+  # is primarily explained by general language-modeling machinery rather than
+  # a specialized translation circuit. Proposed full rewrite (user to decide
+  # whether to keep; current bullets below retained so the document still
+  # renders cleanly in the meantime):
+  #
+  #   - Showed that LLM translation quality is primarily explained by general
+  #     language-modeling machinery rather than a specialized translation
+  #     circuit; probed Llama-3.1-8B and Aya-23-8B across English-centric and
+  #     multilingual pretraining regimes.
+  #   - Activation-patched and ablated SAE features for mono- vs. multilingual
+  #     grammatical concepts to establish causal relevance; quantified feature
+  #     receptive fields, output geometry, and cross-layer representation
+  #     similarity.
+  #   - Poster, New England Mechanistic Interpretability workshop (NEMI) 2025.
+  - title: "Noisy Translation Channels in Large Language Models"
+    dates: "Mar 2025 -- Present"
+    bullets:
+      - text: "Evaluated machine translation using Llama-3.1-8B and Aya-23-8B to interpret effects of English-centric pretraining data."
+        targets: [resume, cv]
+      - text: "Intervened on SAE features relevant to multi- and monolingual grammatical concept representation for causal relevance."
+        targets: [resume, cv]
+      - text: "Quantified multilinguality of features' receptive fields and output spaces, and representation similarity across layers."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  - title: "Cross-Language Synonym Analysis and Scoring"
+    dates: "Sep 2024 -- Jan 2025"
+    bullets:
+      - text: "Developed system to quantify closeness of synonyms across languages and their translation flexibility."
+        targets: [resume, cv]
+      - text: "Used Pandas and spaCy for tokenization and lemmatization; validated model on the Tatoeba dataset."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  - title: "Assessing LWIR and Visual Sensor Modalities for UAV Detection and Tracking"
+    dates: "May 2024"
+    venue: "2024 IEEE Intermountain Engineering, Technology and Computing (IETC), pp.~141--146"
+    doi: "10.1109/IETC61393.2024.10564431"
+    bullets:
+      # Modality corrected from "audio, visual, and lidar" (which described the
+      # REU project) to "LWIR and visual" — matches the actual published paper.
+      - text: "Coauthored paper assessing long-wave infrared (LWIR) and visual sensor modalities for UAV detection."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+  - title: "Tetris Reinforcement Learning Agent"
+    dates: "Apr 2024 -- May 2024"
+    bullets:
+      - text: "Built Tetris agent in Java, integrating a custom neural network library and using teacher forcing to speed training times."
+        targets: [resume, cv]
+      - text: "Earned 2nd place out of 150-student course for feature engineering and effective hyperparameter search."
+        targets: [resume, cv]
+    targets: [resume, cv]
+
+# ---------------------------------------------------------------------
+# Awards & Fellowships (CV only)
+# ---------------------------------------------------------------------
+awards:
+  - name: "Boston University Undergraduate Research Opportunities Program (UROP) \\textemdash\\ Summer Research Fellowship"
+    date: "Summer 2025"
+    note: "Funded the Noisy Translation Channels project; presented poster at NEMI."
+    targets: [cv]
+
+  - name: "Tetris Reinforcement Learning Competition \\textemdash\\ 2nd of 150"
+    date: "May 2024"
+    note: "CS 506 Tools for Data Science, Boston University."
+    targets: [cv]
+
+# ---------------------------------------------------------------------
+# Presentations & Posters (CV only)
+# ---------------------------------------------------------------------
+presentations:
+  - title: "Noisy Translation Channels in Large Language Models"
+    venue: "New England Mechanistic Interpretability workshop (NEMI)"
+    date: "2025"
+    kind: "Poster"
+    targets: [cv]
+
+# ---------------------------------------------------------------------
+# Skills
+# ---------------------------------------------------------------------
+skills:
+  technical: "Python, PyTorch, HuggingFace, nnsight, Weights \\& Biases, Claude Code, OCaml, C"
+  languages: "English (Native), Spanish (Fluent)"

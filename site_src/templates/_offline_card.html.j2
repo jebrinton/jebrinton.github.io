@@ -1,0 +1,84 @@
+{# Offline card partial.
+   Expects `card` with: id, number, name, type, type_color, stars, stats,
+                       flavor, art, back, and optional `legendary`.
+   Optional `hidden` flag: when true, card starts hidden (aria-hidden) and
+   reveals after all other cards have been flipped at least once. #}
+<article
+  class="cq-card cq-card--{{ card.type_color }}{% if card.legendary %} cq-card--legendary{% endif %}{% if hidden %} cq-card--hidden{% endif %}"
+  data-id="{{ card.id }}"
+  {% if card.legendary %}data-legendary="true"{% endif %}
+  {% if hidden %}data-hidden="true" aria-hidden="true" hidden{% endif %}
+  tabindex="0"
+  role="button"
+  aria-label="{{ card.name }} card. Press to flip.">
+  <div class="cq-card__flipper">
+
+    {# ——— FRONT ——— #}
+    <div class="cq-card__face cq-card__face--front">
+      <header class="cq-card__header">
+        <span class="cq-card__no">#{{ card.number }}</span>
+        <span class="cq-card__type">{{ card.type }}</span>
+      </header>
+
+      <div class="cq-card__art cq-card__art--{{ card.art.kind }}">
+        {%- if card.art.kind == "photo" %}
+        {%- if card.art.todo %}
+        <!-- TODO: replace with action photo {{ card.art.todo }} -->
+        {%- endif %}
+        <img src="{{ card.art.src }}" alt="{{ card.art.alt }}" loading="lazy">
+        {%- elif card.art.kind == "symbol" %}
+        {%- if card.art.todo %}
+        <!-- TODO: replace with action photo {{ card.art.todo }} -->
+        {%- endif %}
+        <div class="cq-card__art-symbol" aria-hidden="true">{{ card.art.glyph }}</div>
+        {%- elif card.art.kind == "legendary" %}
+        <div class="cq-card__art-legendary" aria-hidden="true">
+          <div class="cq-card__art-legendary-inner"></div>
+        </div>
+        {%- endif %}
+      </div>
+
+      <h3 class="cq-card__name">{{ card.name }}</h3>
+
+      <div class="cq-card__stars" role="img" aria-label="Rating: {{ card.stars }} of 5">
+        {% for i in range(1, 6) -%}
+        <svg class="cq-star{% if i <= card.stars %} cq-star--filled{% endif %}" viewBox="0 0 24 24" aria-hidden="true">
+          <use href="#gem-star"></use>
+        </svg>
+        {%- endfor %}
+      </div>
+
+      <dl class="cq-card__stats">
+        {% for row in card.stats -%}
+        <div class="cq-card__stat"><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
+        {% endfor -%}
+      </dl>
+
+      <p class="cq-card__flavor">{{ card.flavor | trim }}</p>
+
+      {% if card.legendary %}<span class="cq-card__ribbon" aria-hidden="true">LEGENDARY</span>{% endif %}
+    </div>
+
+    {# ——— BACK ——— #}
+    <div class="cq-card__face cq-card__face--back">
+      <header class="cq-card__header">
+        <span class="cq-card__no">#{{ card.number }}</span>
+        <span class="cq-card__type">{{ card.type }}</span>
+      </header>
+      <div class="cq-card__back-body">
+        {% if card.back.quote %}
+        <blockquote class="cq-card__back-quote">{{ card.back.quote }}</blockquote>
+        {% endif %}
+        {% if card.back.links %}
+        <ul class="cq-card__back-links">
+          {% for link in card.back.links -%}
+          <li><a href="{{ link.href }}" target="_blank" rel="noopener">{{ link.label }} &rarr;</a></li>
+          {% endfor -%}
+        </ul>
+        {% endif %}
+      </div>
+      <button type="button" class="cq-card__back-close" aria-label="Flip card back">&larr; FLIP</button>
+    </div>
+
+  </div>
+</article>
