@@ -3,7 +3,8 @@
 #
 # HOW TO EDIT:
 #   - Bullet / section text is written in LaTeX-flavored plain text:
-#       en-dash = `--`, em-dash = `---`, ampersand = `\&`, percent = `\%`,
+#       en-dash = `--`, em-dash = `---`, ampersand = `\\&` in double quotes
+#       or `\&` in single quotes, percent = `\\%` in double quotes,
 #       thousands sep = `{,}`, explicit space = `\;`, italics = `\textit{...}`,
 #       bold = `\textbf{...}`, links = `\href{url}{anchor}`.
 #     The build's HTML filter converts these to HTML equivalents for the
@@ -42,13 +43,12 @@ personal:
 # ---------------------------------------------------------------------
 education:
   - institution: "Boston University"
-    dates: "Expected May 2026"
+    dates: "May 2026"
     degree: "B.A./M.S. in Mathematics and Computer Science"
-    detail: "Major GPA: 4.0"
+    detail: "GPA: 3.89 (B.A.); 4.0 (M.S.)"
     coursework:
       label: "Relevant coursework"
-      text: "Interpretable Machine Learning, Directed Study in LLM Translation Interpretability, Principles of ML, Natural Language Processing, Stochastic Processes, Causal Inference*, Abstract Algebra, Advanced Algorithms, Intro to AI, Foundations of Mathematics*, Logic and Programming Languages*, Discrete Mathematics"
-      suffix: "(* in progress)"
+      text: "Interpretable Machine Learning, Directed Study in LLM Translation Interpretability, Principles of ML, Natural Language Processing, Stochastic Processes, Causal Inference, Abstract Algebra, Advanced Algorithms, Intro to AI, Foundations of Mathematics, Logic and Programming Languages, Theory of Computation"
     targets: [resume, cv]
 
   - institution: "Utah State University"
@@ -63,47 +63,76 @@ education:
 # Experience
 # ---------------------------------------------------------------------
 experience:
+  - title: "Technical Fellowship Reviewer"
+    org: Constellation
+    location: "Remote Contractor"
+    dates: "May 2026 -- Present"
+    bullets:
+      - text: "Screened and reference checked 200+ applicants to the Anthropic Fellows Program and the Astra Fellowship."
+        targets: [resume, cv]
+
+  - title: "Technical Interviewer"
+    org: FAR.AI
+    location: "Remote Contractor"
+    dates: "March 2026 -- Present"
+    bullets:
+      - text: "Interviewed research scientist and engineer candidates across a variety of ML, math, and programming questions."
+        targets: [resume, cv]
+
   # TODO: rewrite bullets. Red-team flagged current text as unverifiable
   # ("1{,}000+ students reached" needs a defensible denominator; "120 applicants"
   # without outcomes is puff). User to provide final version — see CLAUDE.md
   # positioning guidance (concrete numbers with denominators, named placements).
   - title: "Executive Director"
-    org: "Boston University Artificial Intelligence Safety Association"
+    org: "Boston University AI Safety \\& Alignment"
     location: "Boston, MA"
     dates: "May 2025 -- Present"
     bullets:
-      - text: "Grew club from 4--6 person avg. attendance to 120 total applicants across 6 intro cohorts and 2 upskilling programs."
+      - text: "Increased membership by 10x; members accepted to ERA, LASR, MARS, SPAR; Harvard and MIT graduate programs."
         targets: [resume, cv]
-      - text: "Delivered tailored presentations on AI safety to over a dozen lectures, reaching a total enrollment of 1{,}000+ students."
+      - text: "Presented on a wide range of AI risks to over a dozen courses, reaching a total enrollment of 1{,}000+ students."
         targets: [resume, cv]
-      - text: "Organized guest speakers and intra-university partnerships, putting on events with 90+ attendees."
+      - text: "Negotiated hackathon partnerships; organized 20 events, from guest speakers to interuni.\ socials and research meetings."
         targets: [resume, cv]
-      - text: "Developed technical AI safety curriculum and presentations on goal misgeneralization, interpretability, and evaluations."
+      - text: "Wrote and facilitated technical AI safety curriculum; organized 6 discussion cohorts and 2 upskilling programs."
+        targets: [resume, cv] 
+    targets: [resume, cv]
+
+  - title: "AI Safety Fieldbuilding Mentor"
+    org: "Pathfinder Fellowship (Kairos)"
+    location: "Remote"
+    dates: "Dec 2025 -- May 2026"
+    bullets:
+      - text: "Guided Columbia University's AI safety group directors on outreach strategy, lecture series, and leadership transitions."
         targets: [resume, cv]
     targets: [resume, cv]
+
+  # •	Mentoring two AI safety university organizers on their organization’s programming, theory of change, and leadership 
 
   # TODO: REWRITE_PENDING. User is finalizing framing of the MARS research;
   # current bullet is a placeholder that names the research direction at a
   # high level only. Replace with concrete method / model / attack / stage
   # once framing lands. Keep mentor attribution.
   - title: "Research Fellow"
-    org: "Mentorship for Alignment Researchers (CAISH)"
+    org: "Mentorship for Alignment Researchers (Cambridge AI Safety Hub)"
     location: "Cambridge, UK"
     dates: "Dec 2025 -- Present"
     bullets:
-      - text: "Developing tamper-resistance methods that constrain harmful-capability transfer across behavior categories, with an RL training component; mentored by Prof. Zhijing Jin."
+      - text: "Developed model diffing interpretability methods for model safeguard checkpoints; mentored by Prof. Zhijing Jin."
         targets: [resume, cv]
     targets: [resume, cv]
 
   - title: "Teaching Fellow, Course Assistant"
-    org: "Boston University College of Arts and Sciences"
+    org: "Boston University College of Arts and Sciences, College of Engineering"
     location: "Boston, MA"
-    dates: "Aug 2024 -- Present"
+    dates: "Aug 2024 -- Dec 2025"
     bullets:
-      - text: "Guided labs on computer architecture, operating systems, memory management, concurrency, and networking."
+      - text: "Taught in lab sections and office hours for linear algebra, computer systems, and calculus courses."
         targets: [resume, cv]
-      - text: "Led office hours, debugging issues in Jade circuitry, x86 Assembly, Git, and C, along with calculus and linear algebra."
-        targets: [resume, cv]
+      # - text: "Guided labs on computer architecture, operating systems, memory management, concurrency, and networking."
+      #   targets: [resume, cv]
+      # - text: "Led office hours, debugging issues in Jade circuitry, x86 Assembly, Git, and C, along with calculus and linear algebra."
+      #   targets: [resume, cv]
     targets: [resume, cv]
 
   # NOTE: UROP removed as a separate experience entry (the substance was the
@@ -111,22 +140,23 @@ experience:
   # UROP is now recorded under Awards (CV only).
 
   - title: "Machine Learning Research Intern"
-    org: "Montana State University NSF REU"
+    org: "NSF Research Experiences for Undergraduates, Montana State University"
     location: "Bozeman, MT"
     dates: "May 2023 -- Aug 2023"
     bullets:
-      - text: "Designed and conducted drone-flight field experiments, gathering over 3 hours of audio."
-        targets: [resume, cv]
-      - text: "Cleaned 1M audio frames in MATLAB; used scikit-learn for clustering, dimension reduction, and signal processing."
-        targets: [resume, cv]
+      - text: "Designed UAV flight experiment, collecting 3 hours of audio; applied signal processing and ML methods for detection."
+      # - text: "Designed and conducted drone-flight field experiments, gathering over 3 hours of audio."
+      #   targets: [resume, cv]
+      # - text: "Cleaned 1M audio frames in MATLAB; used scikit-learn for clustering, dimension reduction, and signal processing."
+      #   targets: [resume, cv]
     targets: [resume, cv]
 
-  - title: "Student Researcher"
-    org: "Direct Laboratory"
+  - title: "Undergraduate Researcher"
+    org: "DIRECT Laboratory (Utah State University)"
     location: "Logan, UT"
     dates: "Dec 2022 -- May 2023"
     bullets:
-      - text: "Leveraged ROS to write Python-based publishers and subscribers for robot pathfinding and camera movement."
+      - text: "Wrote Python-based publishers and subscribers in ROS for robot pathfinding and camera movement."
         targets: [resume, cv]
     targets: [resume, cv]
 
@@ -137,7 +167,7 @@ experience:
     bullets:
       - text: "3D-modeled and manufactured prototypes in SolidWorks for an S-band patch antenna connection and coverglass frame."
         targets: [resume, cv]
-    targets: [resume, cv]
+    targets: [cv]
 
 # ---------------------------------------------------------------------
 # Projects & Publications
@@ -159,23 +189,23 @@ projects:
   #     receptive fields, output geometry, and cross-layer representation
   #     similarity.
   #   - Poster, New England Mechanistic Interpretability workshop (NEMI) 2025.
-  - title: "Noisy Translation Channels in Large Language Models"
+  - title: "The Interlingua Hypothesis: LLMs Translate via a Latent Task-agnostic Feature Space"
     dates: "Mar 2025 -- Present"
     bullets:
-      - text: "Evaluated machine translation using Llama-3.1-8B and Aya-23-8B to interpret effects of English-centric pretraining data."
-        targets: [resume, cv]
-      - text: "Intervened on SAE features relevant to multi- and monolingual grammatical concept representation for causal relevance."
-        targets: [resume, cv]
-      - text: "Quantified multilinguality of features' receptive fields and output spaces, and representation similarity across layers."
+      - text: "Experimented on whether LLMs translate via shared multilingual representations as opposed to pairwise mappings."
+      - text: "Used gradient-based methods to identify and then causally validate components implicated in translation."
+      # - text: "Intervened on SAE features relevant to multi- and monolingual grammatical concept representation for causal relevance."
+      - text: "Quantified multilinguality of features' receptive fields and output spaces and representation similarity across layers."
+      - text: "Presented posters at the New England Mechanistic Interpretability Workshop and Boston University's UROP Symposium."
         targets: [resume, cv]
     targets: [resume, cv]
 
   - title: "Cross-Language Synonym Analysis and Scoring"
     dates: "Sep 2024 -- Jan 2025"
     bullets:
-      - text: "Developed system to quantify closeness of synonyms across languages and their translation flexibility."
+      - text: "Devised and empirically computed metrics for cross-language synonym closeness and translation flexibility."
         targets: [resume, cv]
-      - text: "Used Pandas and spaCy for tokenization and lemmatization; validated model on the Tatoeba dataset."
+      # - text: "Used Pandas and spaCy for tokenization and lemmatization; validated model on the Tatoeba dataset."
         targets: [resume, cv]
     targets: [resume, cv]
 
@@ -193,9 +223,7 @@ projects:
   - title: "Tetris Reinforcement Learning Agent"
     dates: "Apr 2024 -- May 2024"
     bullets:
-      - text: "Built Tetris agent in Java, integrating a custom neural network library and using teacher forcing to speed training times."
-        targets: [resume, cv]
-      - text: "Earned 2nd place out of 150-student course for feature engineering and effective hyperparameter search."
+      - text: "Designed Q-learning agent with heuristic-guided exploration and reward shaping; placed 2nd in 150-person course."
         targets: [resume, cv]
     targets: [resume, cv]
 

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three mockups — Jacob Brinton</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --paper: #f5efe2;
+  --ink: #15120d;
+  --ink-soft: #5e544a;
+  --rule: #d9cdb5;
+  --accent: #7a3b54;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  padding: 6vh 6vw;
+  -webkit-font-smoothing: antialiased;
+}
+header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 32px; border-bottom: 1px solid var(--rule);
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-soft);
+}
+header span:first-child { color: var(--ink); }
+h1 {
+  font-weight: 400; font-style: italic;
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  margin: 8vh 0 4vh;
+}
+h1 em { color: var(--accent); font-style: italic; }
+.lede {
+  max-width: 52ch;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-bottom: 8vh;
+}
+.list {
+  border-top: 1px solid var(--rule);
+}
+.row {
+  display: grid;
+  grid-template-columns: 80px 1fr 3fr 140px;
+  gap: 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background .2s;
+}
+.row:hover { background: rgba(122,59,84,0.05); }
+.row__num {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--ink-soft);
+}
+.row__title {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2.2vw, 32px);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+.row__desc {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.row__cta {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--accent);
+}
+footer {
+  margin-top: 8vh;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+@media (max-width: 800px) {
+  .row { grid-template-columns: 48px 1fr; }
+  .row__desc { grid-column: 2; }
+  .row__cta { grid-column: 2; text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span>Jacob Brinton · Mockups</span>
+  <span>2026-04-18</span>
+</header>
+
+<h1>Three looks,<br>one <em>person</em>.</h1>
+<p class="lede">Three different visual directions for the site, each built around the same bio and the same hobbies. Riso accents throughout. Each mockup is a standalone HTML file — click to view.</p>
+
+<div class="list">
+  <a class="row" href="01-big-serif-essay.html">
+    <div class="row__num">01</div>
+    <div class="row__title">Big-serif essay</div>
+    <div class="row__desc">Fraunces headline running across the fold, pill-cropped photos embedded in the prose, burgundy links. The cleanest expression of the Mindy-Nguyen editorial vocabulary, without imitating it.</div>
+    <div class="row__cta">Open →</div>
+  </a>
+  <a class="row" href="02-gallery-catalog.html">
+    <div class="row__num">02</div>
+    <div class="row__title">Gallery catalog</div>
+    <div class="row__desc">Each project and each hobby treated as a plate in a catalogue. Museum labels, folio numbers, Cormorant italic, a single apricot dot as the entire color story.</div>
+    <div class="row__cta">Open →</div>
+  </a>
+  <a class="row" href="03-pointillism.html">
+    <div class="row__num">03</div>
+    <div class="row__title">Pixel as pointillism</div>
+    <div class="row__desc">Photographs rendered as dots, layered with soft riso colors, presented as studies from a field book. Keeps the pixel-art instinct but shifts the reference from sprite to stipple.</div>
+    <div class="row__cta">Open →</div>
+  </a>
+</div>
+
+<footer>Mockups intentionally loose — type and spacing tuned for direction, not pixel-perfect finish.</footer>
+
+</body>
+</html>

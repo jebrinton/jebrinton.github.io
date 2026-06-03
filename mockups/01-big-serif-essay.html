@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup 01 — Big-serif essay — Jacob Brinton</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fraunces: the closest open alternative to GT Sectra (Mindy's probable face) -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400;1,9..144,700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Warm paper — slightly warmer than Mindy's cream */
+  --paper: #f5efe2;
+  --paper-soft: #ede4d1;
+  --ink: #15120d;
+  --ink-soft: #5e544a;
+  /* Riso accents — burgundy (Risograph 'Burgundy' #914e72) for links, emerald for the green motif */
+  --accent: #7a3b54;        /* muted burgundy, dimmed from #914e72 for readability */
+  --green: #1f6b4d;         /* emerald-ish */
+  --rule: #d9cdb5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---------- NAV ---------- */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 28px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  z-index: 10;
+  background: linear-gradient(to bottom, var(--paper) 0%, var(--paper) 60%, transparent 100%);
+}
+.nav a {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav a:hover { color: var(--accent); }
+.nav__right { display: flex; gap: 36px; }
+
+/* ---------- HERO ESSAY ---------- */
+.essay {
+  padding: 180px 6vw 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.essay h1 {
+  /* Huge display serif. fluid sizing. */
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(40px, 6.6vw, 100px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  color: var(--ink);
+}
+
+.essay h1 em {
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+}
+
+/* Inline image "pill" — the defining Mindy-Nguyen move. */
+.pill {
+  display: inline-block;
+  height: 0.85em;
+  width: 1.6em;
+  border-radius: 999px;
+  vertical-align: -0.12em;
+  margin: 0 0.08em;
+  overflow: hidden;
+  background: var(--paper-soft);
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(21,18,13,0.04);
+}
+.pill img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Slightly larger pills for emphasis */
+.pill.wide {
+  width: 2.2em;
+}
+
+/* ---------- META STRIP ---------- */
+.meta {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.meta > div { grid-column: span 3; }
+.meta h3 {
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 12px;
+  font-size: 11px;
+}
+.meta p {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  font-weight: 400;
+}
+.meta a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.meta a:hover { border-bottom-color: var(--accent); }
+
+/* ---------- SECOND SECTION: WORK INDEX (sparse, museum-labelled) ---------- */
+.index {
+  padding: 120px 6vw 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.index__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 40px;
+}
+.work {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 120px;
+  gap: 24px;
+  padding: 28px 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+  font-size: 20px;
+}
+.work:last-child { border-bottom: 1px solid var(--rule); }
+.work__num {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+.work__title {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 24px;
+  line-height: 1.15;
+}
+.work__desc {
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.work__year {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+/* ---------- OFFLINE STRIP ---------- */
+.offline-strip {
+  padding: 80px 6vw 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.offline-strip h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(28px, 3vw, 44px);
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+  color: var(--green);
+}
+.offline-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  color: var(--ink);
+}
+.offline-row .pill.wide { transform: translateY(2px); }
+
+/* ---------- FOOTER ---------- */
+footer {
+  padding: 40px 48px 28px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--rule);
+  margin: 0 6vw;
+}
+
+@media (max-width: 800px) {
+  .nav { padding: 20px 24px; }
+  .nav__right { gap: 20px; }
+  .essay { padding: 140px 24px 60px; }
+  .meta > div { grid-column: span 6; }
+  .work { grid-template-columns: 48px 1fr 80px; }
+  .work__desc { grid-column: 2 / -1; grid-row: 2; }
+  footer { margin: 0 24px; flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#">Jacob Brinton</a>
+  <div class="nav__right">
+    <a href="#">Work</a>
+    <a href="#">Offline</a>
+    <a href="#">CV</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ESSAY ====== -->
+<section class="essay">
+  <h1>
+    Jacob Brinton is a researcher
+    <span class="pill wide"><img src="../assets/nature/wasatch_snowy_peak_clouds.jpeg" alt=""></span>
+    working on <em>mechanistic interpretability</em> and
+    <span class="pill wide"><img src="../assets/nature/timpanogos_wildflowers.jpeg" alt=""></span>
+    AI safety in Boston. He studies how language models translate
+    <span class="pill"><img src="../assets/nature/istanbul_bridge_minaret.jpeg" alt=""></span>
+    between languages, how they can be made harder to misuse
+    <span class="pill"><img src="../assets/nature/rome_basilica_interior.jpeg" alt=""></span>,
+    and how research can actually ship. Outside the laptop he skis the Wasatch
+    <span class="pill"><img src="../assets/nature/snowbird_ridge_stormy.jpeg" alt=""></span>,
+    solves crosswords, and is slowly learning Türkçe
+    <span class="pill"><img src="../assets/nature/istanbul_red_house.jpeg" alt=""></span>.
+  </h1>
+
+  <div class="meta">
+    <div>
+      <h3>Based in</h3>
+      <p>Boston, MA</p>
+    </div>
+    <div>
+      <h3>Working on</h3>
+      <p>Tamper resistance; LLM translation interpretability; fieldbuilding at <a href="https://buaisa.org">buaisa.org</a>.</p>
+    </div>
+    <div>
+      <h3>Reach</h3>
+      <p><a href="mailto:jbrin@bu.edu">jbrin@bu.edu</a><br>
+         <a href="https://github.com/jebrinton">github</a> · <a href="https://linkedin.com/in/jbrinton">linkedin</a></p>
+    </div>
+    <div>
+      <h3>Currently reading</h3>
+      <p>Papers from NEMI; anything on feature geometry.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== WORK INDEX ====== -->
+<section class="index">
+  <div class="index__label">Selected work</div>
+
+  <div class="work">
+    <div class="work__num">01</div>
+    <div class="work__title">Noisy Translation Channels in Large Language Models</div>
+    <div class="work__desc">Probed Llama-3.1-8B and Aya-23-8B; activation-patched SAE features to test causal relevance of multilingual grammatical concepts.</div>
+    <div class="work__year">2025 — present</div>
+  </div>
+
+  <div class="work">
+    <div class="work__num">02</div>
+    <div class="work__title">Tamper-resistance research at MARS</div>
+    <div class="work__desc">Methods that constrain harmful-capability transfer across behavior categories; mentored by Prof. Zhijing Jin.</div>
+    <div class="work__year">Dec 2025 — present</div>
+  </div>
+
+  <div class="work">
+    <div class="work__num">03</div>
+    <div class="work__title">Assessing LWIR and Visual Sensor Modalities for UAV Detection</div>
+    <div class="work__desc">Coauthored; IEEE Intermountain Engineering, Technology and Computing.</div>
+    <div class="work__year">2024</div>
+  </div>
+
+  <div class="work">
+    <div class="work__num">04</div>
+    <div class="work__title">Tetris Reinforcement Learning Agent</div>
+    <div class="work__desc">Java, custom neural-net library, teacher forcing. 2nd of 150.</div>
+    <div class="work__year">2024</div>
+  </div>
+</section>
+
+<!-- ====== OFFLINE STRIP ====== -->
+<section class="offline-strip">
+  <h2>Offline — life with the laptop shut.</h2>
+  <div class="offline-row">
+    <span>Skiing <span class="pill wide"><img src="../assets/nature/snowbird_chairlift_clouds.jpeg" alt=""></span></span>
+    <span>Mountain biking <span class="pill wide"><img src="../assets/nature/cecret_lake_wasatch.jpeg" alt=""></span></span>
+    <span>Crosswords</span>
+    <span>Geography <span class="pill wide"><img src="../assets/nature/segovia_cathedral_hillside.jpeg" alt=""></span></span>
+    <span>Languages</span>
+    <span>Religion &amp; meaning <span class="pill wide"><img src="../assets/nature/alhambra_tower_courtyard.jpeg" alt=""></span></span>
+    <span>The color green</span>
+  </div>
+</section>
+
+<footer>
+  <span>Jacob Brinton, 2026</span>
+  <span>Mockup 01 — Big-serif essay</span>
+</footer>
+
+</body>
+</html>

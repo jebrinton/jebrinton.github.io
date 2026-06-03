@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup 03 — Pixel as pointillism — Jacob Brinton</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fraunces SOFT axis for the 'warm, almost hand-drawn' feel. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..500,50..100;0,9..144,600..700,50..100;1,9..144,300..500,50..100&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Warm, slightly greyed paper — like museum-print stock */
+  --paper: #f3ece0;
+  --paper-soft: #ebe2d2;
+  --ink: #1b1713;
+  --ink-soft: #6a5e52;
+
+  /* Palette: three riso tones used as colored dots in the dot renderings */
+  --mauve: #d299b4;      /* softened Light Mauve */
+  --foam: #72bfaf;       /* softened Sea Foam */
+  --teal: #1f6e6b;       /* deepened for readability */
+  --mustard: #c99c4a;    /* dimmed Bright Gold / Apricot mix */
+  --rule: #d9cdb8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'opsz' 14, 'SOFT' 60;
+  overflow-x: hidden;
+}
+
+/* Subtle paper grain — very tight dot pattern at low opacity */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle, rgba(27,23,19,0.05) 0.5px, transparent 0.6px);
+  background-size: 4px 4px;
+  opacity: 0.7;
+}
+
+main, nav, footer, section { position: relative; z-index: 1; }
+
+/* ---------- NAV ---------- */
+.nav {
+  padding: 28px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
+}
+.nav a { color: var(--ink); text-decoration: none; }
+.nav a:hover { color: var(--teal); }
+.nav__right { display: flex; gap: 36px; }
+.nav__logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  padding: 10vh 6vw 6vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6vw;
+  align-items: center;
+}
+.hero__text h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(38px, 5.2vw, 78px);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+}
+.hero__text h1 em {
+  font-style: italic;
+  color: var(--teal);
+  font-weight: 500;
+}
+.hero__text p {
+  margin-top: 28px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 44ch;
+  font-family: 'Fraunces', serif;
+}
+.hero__kicker {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+/* ---------- DOT PLATE ---------- */
+.plate {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--paper-soft);
+  overflow: hidden;
+}
+
+/* The pointillist effect: photograph masked into a dot grid. Single mask,
+   varied size per plate class so the page reads as a set of plates done at
+   different "resolutions" rather than a single repeating screen. */
+.plate .dots {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  -webkit-mask-image: radial-gradient(circle, #000 35%, transparent 52%);
+  -webkit-mask-size: 7px 7px;
+  -webkit-mask-repeat: repeat;
+  mask-image: radial-gradient(circle, #000 35%, transparent 52%);
+  mask-size: 7px 7px;
+  mask-repeat: repeat;
+  /* slightly push contrast up so the photo actually punches through the paper */
+  filter: saturate(0.85) contrast(1.05);
+}
+/* Per-plate coarseness: fine / mid / coarse */
+.plate.dots-a .dots { -webkit-mask-size: 5px 5px; mask-size: 5px 5px; }
+.plate.dots-b .dots { -webkit-mask-size: 8px 8px; mask-size: 8px 8px; }
+.plate.dots-c .dots { -webkit-mask-size: 11px 11px; mask-size: 11px 11px; }
+
+/* Color wash — a whisper of riso tint over the dots. Use 'multiply' (not
+   'color') so the photograph's tonal range is preserved, with just enough
+   hue shift to feel hand-printed rather than digital. */
+.plate .dots--color {
+  position: absolute;
+  inset: 0;
+  background: var(--mauve);
+  mix-blend-mode: multiply;
+  opacity: 0.25;
+  pointer-events: none;
+}
+.plate .dots--color.teal    { background: var(--teal);    opacity: 0.18; }
+.plate .dots--color.foam    { background: var(--foam);    opacity: 0.25; }
+.plate .dots--color.mustard { background: var(--mustard); opacity: 0.22; }
+
+.plate__tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 4px 8px;
+  border: 1px solid var(--ink);
+}
+
+/* ---------- PLATE GRID ---------- */
+.studies {
+  padding: 8vh 6vw 6vh;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.studies__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.studies__header h2 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(28px, 3vw, 44px);
+  letter-spacing: -0.01em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+}
+.studies__header .count {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px 40px;
+}
+
+.study h3 {
+  margin-top: 18px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+}
+.study .meta {
+  margin-top: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.study p {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-family: 'Fraunces', serif;
+}
+
+/* ---------- SIDE BAND: HAND-DRAWN DOT ICONS ---------- */
+.icons {
+  padding: 6vh 6vw 6vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  align-items: center;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.icons__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.icons__label h3 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  color: var(--ink);
+  margin-top: 8px;
+  line-height: 1.2;
+}
+.icons__row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
+}
+.icon {
+  text-align: center;
+}
+.icon svg {
+  width: 100%;
+  height: auto;
+  max-width: 90px;
+  display: block;
+  margin: 0 auto 10px;
+}
+.icon span {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  padding: 40px 48px 28px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr 1fr; }
+  .icons { grid-template-columns: 1fr; }
+  .icons__row { grid-template-columns: repeat(3, 1fr); }
+  .nav { padding: 20px 24px; }
+  .nav__right { gap: 18px; }
+  footer { padding: 28px 24px; flex-direction: column; gap: 8px; }
+}
+
+@media (max-width: 520px) {
+  .grid { grid-template-columns: 1fr; }
+  .hero { padding: 8vh 24px 4vh; }
+  .studies, .icons { padding: 6vh 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav__logo" href="#">Jacob Brinton</a>
+  <div class="nav__right">
+    <a href="#">Studies</a>
+    <a href="#">Work</a>
+    <a href="#">Offline</a>
+    <a href="#">CV</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero__text">
+    <div class="hero__kicker">Vol. I · A Field Book</div>
+    <h1>A small book of <em>studies</em> — in dots, and afternoons.</h1>
+    <p>Jacob Brinton is an interpretability researcher in Boston. He spends most of his days looking at how language models work from the inside. Everything else on this page is what he looks at when he's not doing that.</p>
+  </div>
+  <!-- Hero plate: a dot-rendered mountain photo -->
+  <div class="plate dots-b">
+    <div class="dots" style="background-image: url('../assets/nature/snowy_peak_sunset_clouds.jpeg');"></div>
+    <div class="dots--color mustard"></div>
+    <span class="plate__tag">Plate 0 · Hero</span>
+  </div>
+</section>
+
+<!-- ============ STUDIES GRID ============ -->
+<section class="studies">
+  <div class="studies__header">
+    <h2>Studies from life</h2>
+    <span class="count">01 — 06</span>
+  </div>
+
+  <div class="grid">
+    <div class="study">
+      <div class="plate dots-a">
+        <div class="dots" style="background-image: url('../assets/nature/snowbird_chairlift_clouds.jpeg');"></div>
+        <div class="dots--color foam"></div>
+        <span class="plate__tag">I</span>
+      </div>
+      <h3>Alta, late afternoon</h3>
+      <div class="meta">Skiing · Wasatch · 2024</div>
+      <p>Cold air, quiet head. The only reliable antidote to everything at a desk.</p>
+    </div>
+
+    <div class="study">
+      <div class="plate dots-b">
+        <div class="dots" style="background-image: url('../assets/nature/istanbul_bridge_minaret.jpeg');"></div>
+        <div class="dots--color mustard"></div>
+        <span class="plate__tag">II</span>
+      </div>
+      <h3>Galata, from across the water</h3>
+      <div class="meta">Istanbul · Geography · 2025</div>
+      <p>Every border is an argument somebody won. This one is centuries old.</p>
+    </div>
+
+    <div class="study">
+      <div class="plate dots-c">
+        <div class="dots" style="background-image: url('../assets/nature/timpanogos_wildflowers.jpeg');"></div>
+        <div class="dots--color"></div>
+        <span class="plate__tag">III</span>
+      </div>
+      <h3>Wildflowers, Timpanogos</h3>
+      <div class="meta">Mountain biking · Past life · 2021</div>
+      <p>Many, many bike fixes. Mostly the bike.</p>
+    </div>
+
+    <div class="study">
+      <div class="plate dots-a">
+        <div class="dots" style="background-image: url('../assets/nature/segovia_cathedral_hillside.jpeg');"></div>
+        <div class="dots--color mustard"></div>
+        <span class="plate__tag">IV</span>
+      </div>
+      <h3>Segovia on a hillside</h3>
+      <div class="meta">Spanish · Languages · 2023</div>
+      <p><em>Me encanta hablar español.</em> Grammar is philosophy you can test.</p>
+    </div>
+
+    <div class="study">
+      <div class="plate dots-b">
+        <div class="dots" style="background-image: url('../assets/nature/rome_basilica_interior.jpeg');"></div>
+        <div class="dots--color teal"></div>
+        <span class="plate__tag">V</span>
+      </div>
+      <h3>Interior, Rome</h3>
+      <div class="meta">Religion &amp; meaning · 2024</div>
+      <p>The big questions are the interesting ones. Faith, meaning, what we owe each other. Not as debate — as conversation.</p>
+    </div>
+
+    <div class="study">
+      <div class="plate dots-c">
+        <div class="dots" style="background-image: url('../assets/nature/cecret_lake_wasatch.jpeg');"></div>
+        <div class="dots--color foam"></div>
+        <span class="plate__tag">VI</span>
+      </div>
+      <h3>Cecret Lake, early</h3>
+      <div class="meta">The color green · Ongoing</div>
+      <p>The shade changes. The answer does not.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ DOT-DRAWN ICON STRIP ============ -->
+<section class="icons">
+  <div class="icons__label">
+    An index, hand-plotted.
+    <h3>What he does when the laptop is shut.</h3>
+  </div>
+  <div class="icons__row">
+
+    <!-- Ski: mountain triangle made from dots, a single star dot in riso foam -->
+    <div class="icon">
+      <svg viewBox="0 0 60 60" aria-hidden="true">
+        <g fill="currentColor">
+          <!-- mountain triangle, plotted dot by dot -->
+          <circle cx="30" cy="12" r="1.3"/>
+          <circle cx="26" cy="18" r="1.3"/><circle cx="34" cy="18" r="1.3"/>
+          <circle cx="22" cy="24" r="1.3"/><circle cx="30" cy="24" r="1.3"/><circle cx="38" cy="24" r="1.3"/>
+          <circle cx="18" cy="30" r="1.3"/><circle cx="26" cy="30" r="1.3"/><circle cx="34" cy="30" r="1.3"/><circle cx="42" cy="30" r="1.3"/>
+          <circle cx="14" cy="36" r="1.3"/><circle cx="22" cy="36" r="1.3"/><circle cx="30" cy="36" r="1.3"/><circle cx="38" cy="36" r="1.3"/><circle cx="46" cy="36" r="1.3"/>
+          <circle cx="10" cy="42" r="1.3"/><circle cx="18" cy="42" r="1.3"/><circle cx="26" cy="42" r="1.3"/><circle cx="34" cy="42" r="1.3"/><circle cx="42" cy="42" r="1.3"/><circle cx="50" cy="42" r="1.3"/>
+        </g>
+        <circle cx="30" cy="24" r="2" fill="var(--foam)"/>
+      </svg>
+      <span>Skiing</span>
+    </div>
+
+    <!-- Bike: two circles of dots -->
+    <div class="icon">
+      <svg viewBox="0 0 60 60" aria-hidden="true">
+        <g fill="currentColor">
+          <circle cx="18" cy="38" r="1.3"/><circle cx="12" cy="32" r="1.3"/><circle cx="24" cy="32" r="1.3"/>
+          <circle cx="10" cy="38" r="1.3"/><circle cx="26" cy="38" r="1.3"/><circle cx="12" cy="44" r="1.3"/><circle cx="18" cy="46" r="1.3"/><circle cx="24" cy="44" r="1.3"/>
+          <circle cx="42" cy="38" r="1.3"/><circle cx="36" cy="32" r="1.3"/><circle cx="48" cy="32" r="1.3"/>
+          <circle cx="34" cy="38" r="1.3"/><circle cx="50" cy="38" r="1.3"/><circle cx="36" cy="44" r="1.3"/><circle cx="42" cy="46" r="1.3"/><circle cx="48" cy="44" r="1.3"/>
+          <circle cx="30" cy="22" r="1.6"/>
+        </g>
+        <circle cx="18" cy="38" r="2" fill="var(--mauve)"/>
+        <circle cx="42" cy="38" r="2" fill="var(--mauve)"/>
+      </svg>
+      <span>MTB</span>
+    </div>
+
+    <!-- Hockey: a puck, dotted -->
+    <div class="icon">
+      <svg viewBox="0 0 60 60" aria-hidden="true">
+        <g fill="currentColor">
+          <circle cx="20" cy="28" r="1.3"/><circle cx="26" cy="26" r="1.3"/><circle cx="32" cy="26" r="1.3"/><circle cx="38" cy="28" r="1.3"/>
+          <circle cx="42" cy="32" r="1.3"/><circle cx="38" cy="36" r="1.3"/><circle cx="32" cy="38" r="1.3"/><circle cx="26" cy="38" r="1.3"/>
+          <circle cx="20" cy="36" r="1.3"/><circle cx="16" cy="32" r="1.3"/>
+          <!-- stick -->
+          <circle cx="14" cy="18" r="1.3"/><circle cx="20" cy="22" r="1.3"/><circle cx="26" cy="20" r="1.3"/>
+        </g>
+      </svg>
+      <span>Hockey</span>
+    </div>
+
+    <!-- Crossword: grid of dots -->
+    <div class="icon">
+      <svg viewBox="0 0 60 60" aria-hidden="true">
+        <g fill="currentColor">
+          <circle cx="18" cy="18" r="1.3"/><circle cx="24" cy="18" r="1.3"/><circle cx="30" cy="18" r="1.3"/><circle cx="36" cy="18" r="1.3"/><circle cx="42" cy="18" r="1.3"/>
+          <circle cx="18" cy="24" r="1.3"/><circle cx="30" cy="24" r="1.3"/><circle cx="42" cy="24" r="1.3"/>
+          <circle cx="18" cy="30" r="1.3"/><circle cx="24" cy="30" r="1.3"/><circle cx="30" cy="30" r="1.3"/><circle cx="36" cy="30" r="1.3"/><circle cx="42" cy="30" r="1.3"/>
+          <circle cx="18" cy="36" r="1.3"/><circle cx="30" cy="36" r="1.3"/><circle cx="42" cy="36" r="1.3"/>
+          <circle cx="18" cy="42" r="1.3"/><circle cx="24" cy="42" r="1.3"/><circle cx="30" cy="42" r="1.3"/><circle cx="36" cy="42" r="1.3"/><circle cx="42" cy="42" r="1.3"/>
+        </g>
+        <!-- black squares reimagined as mauve dots -->
+        <circle cx="24" cy="24" r="2.2" fill="var(--mauve)"/>
+        <circle cx="36" cy="24" r="2.2" fill="var(--mauve)"/>
+        <circle cx="24" cy="36" r="2.2" fill="var(--mauve)"/>
+        <circle cx="36" cy="36" r="2.2" fill="var(--mauve)"/>
+      </svg>
+      <span>Crosswords</span>
+    </div>
+
+    <!-- Languages: globe dots -->
+    <div class="icon">
+      <svg viewBox="0 0 60 60" aria-hidden="true">
+        <g fill="currentColor">
+          <circle cx="30" cy="10" r="1.3"/>
+          <circle cx="22" cy="14" r="1.3"/><circle cx="38" cy="14" r="1.3"/>
+          <circle cx="16" cy="20" r="1.3"/><circle cx="30" cy="18" r="1.3"/><circle cx="44" cy="20" r="1.3"/>
+          <circle cx="12" cy="28" r="1.3"/><circle cx="26" cy="26" r="1.3"/><circle cx="34" cy="26" r="1.3"/><circle cx="48" cy="28" r="1.3"/>
+          <circle cx="10" cy="36" r="1.3"/><circle cx="30" cy="34" r="1.3"/><circle cx="50" cy="36" r="1.3"/>
+          <circle cx="12" cy="44" r="1.3"/><circle cx="24" cy="42" r="1.3"/><circle cx="36" cy="42" r="1.3"/><circle cx="48" cy="44" r="1.3"/>
+          <circle cx="18" cy="50" r="1.3"/><circle cx="30" cy="52" r="1.3"/><circle cx="42" cy="50" r="1.3"/>
+        </g>
+        <circle cx="30" cy="26" r="2" fill="var(--foam)"/>
+        <circle cx="24" cy="42" r="2" fill="var(--foam)"/>
+      </svg>
+      <span>Languages</span>
+    </div>
+
+    <!-- Green: a leaf in dots -->
+    <div class="icon">
+      <svg viewBox="0 0 60 60" aria-hidden="true">
+        <g fill="var(--teal)">
+          <circle cx="30" cy="12" r="1.5"/>
+          <circle cx="24" cy="16" r="1.5"/><circle cx="36" cy="16" r="1.5"/>
+          <circle cx="20" cy="22" r="1.5"/><circle cx="40" cy="22" r="1.5"/>
+          <circle cx="18" cy="30" r="1.5"/><circle cx="42" cy="30" r="1.5"/>
+          <circle cx="20" cy="38" r="1.5"/><circle cx="40" cy="38" r="1.5"/>
+          <circle cx="24" cy="44" r="1.5"/><circle cx="36" cy="44" r="1.5"/>
+          <circle cx="30" cy="48" r="1.5"/>
+          <circle cx="30" cy="18" r="1.5"/><circle cx="30" cy="24" r="1.5"/><circle cx="30" cy="30" r="1.5"/><circle cx="30" cy="36" r="1.5"/><circle cx="30" cy="42" r="1.5"/>
+        </g>
+      </svg>
+      <span>The color green</span>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <span>Jacob Brinton, 2026</span>
+  <span>Mockup 03 — Pixel as pointillism</span>
+</footer>
+
+</body>
+</html>

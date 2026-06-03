@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup 02 — Gallery catalog — Jacob Brinton</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Cormorant Garamond: italic is one of the most museum-label-coded cuts on Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Even warmer & lighter paper — catalog stock */
+  --paper: #fbf6ec;
+  --ink: #161310;
+  --ink-soft: #6b6155;
+  /* Riso 'Apricot' (#f6a04d) as the single accent — used as a dot, not a fill */
+  --dot: #e89857;
+  --rule: #e1d6c0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- RUNNING HEAD ---------- */
+.runhead {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--paper);
+  z-index: 10;
+  border-bottom: 1px solid var(--rule);
+}
+.runhead a { color: var(--ink-soft); text-decoration: none; }
+.runhead a:hover { color: var(--ink); }
+
+/* ---------- SPREAD (one per artwork) ---------- */
+.spread {
+  min-height: 100vh;
+  padding: 120px 6vw 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 40px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+/* Page number — like a book */
+.spread .folio {
+  position: absolute;
+  bottom: 40px;
+  right: 6vw;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--ink-soft);
+}
+
+/* ---------- COVER ---------- */
+.cover {
+  min-height: 100vh;
+  padding: 160px 6vw 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.cover__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.cover__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(56px, 10vw, 160px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin-top: 6vh;
+}
+.cover__title .amp {
+  font-weight: 400;
+  color: var(--dot);
+  font-style: italic;
+}
+.cover__sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(20px, 2.2vw, 30px);
+  color: var(--ink-soft);
+  margin-top: 4vh;
+  max-width: 32ch;
+  line-height: 1.4;
+}
+.cover__footline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: 40px;
+  border-top: 1px solid var(--rule);
+  margin-top: 6vh;
+}
+
+/* The single accent dot that appears on covers & section breaks */
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dot);
+  vertical-align: middle;
+  margin: 0 0.4em;
+}
+
+/* ---------- FOREWORD (artist statement) ---------- */
+.foreword .label {
+  grid-column: 1 / 3;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: 6px;
+}
+.foreword .body {
+  grid-column: 4 / 11;
+  font-size: 22px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+.foreword .body p { margin-bottom: 1.2em; }
+.foreword .body em { color: var(--ink); }
+.foreword .body .drop {
+  float: left;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 78px;
+  line-height: 0.85;
+  padding: 8px 10px 0 0;
+  font-weight: 400;
+  color: var(--dot);
+}
+
+/* ---------- PLATE (a work) ---------- */
+.plate .plate__label {
+  grid-column: 1 / 3;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: 10px;
+}
+.plate .plate__image {
+  grid-column: 4 / 9;
+  aspect-ratio: 4 / 5;
+  background: #ddd;
+  overflow: hidden;
+}
+.plate .plate__image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  /* gentle desaturation so colors feel print-like, not screen-like */
+  filter: saturate(0.8) contrast(0.95);
+}
+.plate .plate__caption {
+  grid-column: 10 / 13;
+  padding-top: 8px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.plate .plate__caption h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -0.005em;
+}
+.plate .plate__caption dl {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 6px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.plate .plate__caption dt {
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+.plate .plate__caption dd {
+  color: var(--ink);
+}
+.plate .plate__caption p {
+  color: var(--ink-soft);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* ---------- TEXT PLATE (for non-image works — research) ---------- */
+.plate--text .plate__image {
+  background: transparent;
+  grid-column: 4 / 9;
+  aspect-ratio: auto;
+  display: flex;
+  align-items: center;
+  padding: 40px 20px;
+  border: 1px solid var(--rule);
+  position: relative;
+}
+.plate--text .plate__image::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+.plate--text .plate__image .excerpt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.4;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* ---------- COLOPHON ---------- */
+.colophon {
+  padding: 120px 6vw 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 40px;
+  border-top: 1px solid var(--rule);
+}
+.colophon .label {
+  grid-column: 1 / 3;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: 6px;
+}
+.colophon .body {
+  grid-column: 4 / 10;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.colophon .body a {
+  color: var(--ink);
+  font-style: normal;
+  text-decoration: none;
+  border-bottom: 1px solid var(--dot);
+}
+
+@media (max-width: 800px) {
+  .spread { grid-template-columns: 1fr; gap: 20px; padding: 100px 24px 60px; }
+  .foreword .label, .foreword .body,
+  .plate .plate__label, .plate .plate__image, .plate .plate__caption,
+  .colophon .label, .colophon .body { grid-column: 1 / -1; }
+  .runhead { padding: 14px 20px; }
+  .cover { padding: 120px 24px 60px; }
+  .spread .folio { right: 24px; bottom: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="runhead">
+  <a href="#">Jacob Brinton</a>
+  <span>Catalogue of works &amp; ordinary days · 2026</span>
+  <a href="#">Offline</a>
+</div>
+
+<!-- ========== COVER ========== -->
+<section class="cover">
+  <div>
+    <div class="cover__label">Catalogue № 001 · 2020 — 2026</div>
+    <h1 class="cover__title">
+      Works <span class="amp">&amp;</span><br>ordinary days
+    </h1>
+    <p class="cover__sub">
+      A selection of research, writing, and afternoons away from the laptop. <span class="dot"></span> Jacob Brinton, Boston.
+    </p>
+  </div>
+  <div class="cover__footline">
+    <span>Boston — Wasatch — Istanbul</span>
+    <span>i</span>
+  </div>
+</section>
+
+<!-- ========== FOREWORD ========== -->
+<section class="spread foreword">
+  <div class="label">Foreword</div>
+  <div class="body">
+    <p><span class="drop">J</span>acob Brinton is a senior at Boston University, finishing a combined B.A. / M.S. in mathematics and computer science. His research is concerned with the internal structure of large language models — in particular, how they translate between languages, and how their capacities for harm can be constrained without breaking the useful parts.</p>
+    <p>Outside of that work, his attention tends toward <em>slow things</em>: long days on skis, long afternoons in the mountains, and the long quiet problem of learning another language well enough to think in it. What follows is a catalogue — half of work made, half of days spent — arranged in the order they came.</p>
+  </div>
+  <div class="folio">ii · iii</div>
+</section>
+
+<!-- ========== PLATE I (research — text) ========== -->
+<section class="spread plate plate--text">
+  <div class="plate__label">Plate I</div>
+  <div class="plate__image">
+    <div class="excerpt">
+      "LLM translation is mostly language modeling."
+    </div>
+  </div>
+  <div class="plate__caption">
+    <h2>Noisy Translation Channels in Large Language Models</h2>
+    <dl>
+      <dt>Year</dt><dd>2025 —</dd>
+      <dt>Method</dt><dd>Mech. interp.</dd>
+      <dt>Models</dt><dd>Llama-3.1-8B, Aya-23-8B</dd>
+      <dt>Shown</dt><dd>NEMI 2025, poster</dd>
+      <dt>Funded</dt><dd>BU UROP</dd>
+    </dl>
+    <p>Activation-patched SAE features to test the causal relevance of multilingual grammatical concepts. Quantified feature receptive fields, output geometry, and cross-layer similarity.</p>
+  </div>
+  <div class="folio">01</div>
+</section>
+
+<!-- ========== PLATE II (offline — image) ========== -->
+<section class="spread plate">
+  <div class="plate__label">Plate II</div>
+  <div class="plate__image">
+    <img src="../assets/nature/snowbird_ridge_stormy.jpeg" alt="Snowbird ridge in storm">
+  </div>
+  <div class="plate__caption">
+    <h2>Skiing, Wasatch</h2>
+    <dl>
+      <dt>Site</dt><dd>Alta + Snowbird</dd>
+      <dt>Terrain</dt><dd>Steep &amp; deep</dd>
+      <dt>Years</dt><dd>2008 —</dd>
+      <dt>Notes</dt><dd>Cold air, quiet head.</dd>
+    </dl>
+    <p>The mountains that decided everything else. Anything that happens at a desk has to survive a comparison to this.</p>
+  </div>
+  <div class="folio">02</div>
+</section>
+
+<!-- ========== PLATE III (offline — image) ========== -->
+<section class="spread plate">
+  <div class="plate__label">Plate III</div>
+  <div class="plate__image">
+    <img src="../assets/nature/istanbul_red_house.jpeg" alt="Red house in Istanbul">
+  </div>
+  <div class="plate__caption">
+    <h2>Learning Türkçe</h2>
+    <dl>
+      <dt>Mode</dt><dd>Slow, stubborn</dd>
+      <dt>Motive</dt><dd>Grammar is philosophy you can test</dd>
+      <dt>Years</dt><dd>2024 —</dd>
+      <dt>Fluent in</dt><dd>English, Spanish</dd>
+    </dl>
+    <p><em>Türkçe öğrenmek üzerinde çalışıyorum.</em> The vowel harmony is a pleasure; the case system is a reckoning.</p>
+  </div>
+  <div class="folio">03</div>
+</section>
+
+<!-- ========== PLATE IV (research — text) ========== -->
+<section class="spread plate plate--text">
+  <div class="plate__label">Plate IV</div>
+  <div class="plate__image">
+    <div class="excerpt">
+      "Constrain harmful-capability transfer <br>— without breaking the useful parts."
+    </div>
+  </div>
+  <div class="plate__caption">
+    <h2>Tamper Resistance (MARS)</h2>
+    <dl>
+      <dt>Years</dt><dd>Dec 2025 —</dd>
+      <dt>Mentor</dt><dd>Prof. Zhijing Jin</dd>
+      <dt>Program</dt><dd>CAISH Cambridge</dd>
+      <dt>Method</dt><dd>RL + category constraints</dd>
+    </dl>
+    <p>A framing question: if a model learns to refuse one misuse, can the refusal be made to generalize across a whole behavior category rather than a single prompt?</p>
+  </div>
+  <div class="folio">04</div>
+</section>
+
+<!-- ========== COLOPHON ========== -->
+<section class="colophon">
+  <div class="label">Colophon</div>
+  <div class="body">
+    <p>Set in Cormorant Garamond and Inter. The single accent is Risograph Apricot, printed sparingly. Photography is Jacob's own, taken between 2019 and 2026. Research bullets borrow from public posters and work in progress.</p>
+    <p style="margin-top: 1em;">Reach: <a href="mailto:jbrin@bu.edu">jbrin@bu.edu</a>. Code at <a href="https://github.com/jebrinton">github.com/jebrinton</a>. Mockup 02 of 03.</p>
+  </div>
+</section>
+
+</body>
+</html>
