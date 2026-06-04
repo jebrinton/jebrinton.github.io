@@ -1,38 +1,118 @@
-{# Base page shell: head boilerplate, nav, hero, content block, footer. #}
+{# AUTO-GENERATED — do not hand-edit. Edit site_src/content/<page>.md and re-run build.py #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} &mdash; Jacob Brinton</title>
-  <meta name="description" content="{{ page.meta_description }}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-  <link rel="stylesheet" href="css/style.css">
-  {% block extra_css %}{% endblock %}
-  <!-- AUTO-GENERATED from site_src/content/{{ source_name }}.yml by site_src/build.py. Do not hand-edit. -->
+  <meta name="color-scheme" content="light">
+  <title>{% if title and title != "Jacob Brinton" %}{{ title }} — {% endif %}Jacob Brinton</title>
+  {% if description %}<meta name="description" content="{{ description }}">{% endif %}
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
   {% include "_nav.html.j2" %}
 
-  <div class="page-hero">
-    <h1>{{ hero.title }}</h1>
-    {% block hero_extra %}{% endblock %}
-  </div>
+  <main>
+    {% if pfp %}
+    {# ── Home page: two-column hero ── #}
+    <section class="hero">
+      <div class="hero__essay">
+        {{ body_html | safe }}
+      </div>
+      <div class="hero__pfp">
+        <img src="{{ pfp }}" alt="Jacob Brinton" loading="eager" decoding="async">
+      </div>
+    </section>
 
-  {% block content %}{% endblock %}
+    {% elif photos is defined %}
+    {# ── Travels page: heading + masonry gallery + lightbox ── #}
+    <div class="gallery-page">
+      {{ body_html | safe }}
+    </div>
+    <div class="gallery">
+      {% for photo in photos %}
+      <div class="gallery__item">
+        <img
+          src="{{ photo.src }}"
+          {% if photo.srcset is defined %}srcset="{{ photo.srcset }}"{% endif %}
+          {% if photo.srcset is defined %}sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw"{% endif %}
+          alt="{{ photo.alt | default('') }}"
+          data-full="{{ photo.src }}"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+      <button class="lightbox__close" aria-label="Close">&times;</button>
+      <button class="lightbox__nav lightbox__prev" aria-label="Previous">&#8592;</button>
+      <img class="lightbox__img" src="" alt="">
+      <p class="lightbox__caption"></p>
+      <button class="lightbox__nav lightbox__next" aria-label="Next">&#8594;</button>
+    </div>
+    <script>
+    (function () {
+      var items = Array.from(document.querySelectorAll('.gallery__item img'));
+      var lb    = document.getElementById('lightbox');
+      var lbImg = lb.querySelector('.lightbox__img');
+      var lbCap = lb.querySelector('.lightbox__caption');
+      var cur   = 0;
+
+      function show(idx) {
+        cur = ((idx % items.length) + items.length) % items.length;
+        var img = items[cur];
+        lbImg.src = img.dataset.full || img.src;
+        lbImg.alt = img.alt;
+        lbCap.textContent = img.alt;
+        lb.classList.add('lb-open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lb.classList.remove('lb-open');
+        document.body.style.overflow = '';
+      }
+
+      items.forEach(function (img, i) {
+        img.parentElement.addEventListener('click', function () { show(i); });
+      });
+      lb.querySelector('.lightbox__close').addEventListener('click', close);
+      lb.querySelector('.lightbox__prev').addEventListener('click', function (e) { e.stopPropagation(); show(cur - 1); });
+      lb.querySelector('.lightbox__next').addEventListener('click', function (e) { e.stopPropagation(); show(cur + 1); });
+      lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+      document.addEventListener('keydown', function (e) {
+        if (!lb.classList.contains('lb-open')) return;
+        if (e.key === 'Escape')      close();
+        if (e.key === 'ArrowLeft')   show(cur - 1);
+        if (e.key === 'ArrowRight')  show(cur + 1);
+      });
+    })();
+    </script>
+
+    {% elif pdf is defined %}
+    {# ── Resume page: heading + download button (inline, right) + iframe embed ── #}
+    <div class="resume-page">
+      <div class="resume-header">
+        <h1>{{ title }}</h1>
+        <a href="{{ pdf }}" download class="btn-download">Download PDF</a>
+      </div>
+      <object data="{{ pdf }}" type="application/pdf" class="resume-iframe">
+        <p class="resume-fallback">Your browser doesn't display PDFs inline. <a href="{{ pdf }}">Download instead.</a></p>
+      </object>
+    </div>
+
+    {% else %}
+    {# ── Standard prose page ── #}
+    <div class="content">
+      {{ body_html | safe }}
+    </div>
+    {% endif %}
+  </main>
 
   {% include "_footer.html.j2" %}
-
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
-  <script src="js/nav.js" defer></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      AOS.init({ duration: 700, once: true, offset: 80 });
-    });
-  </script>
-  {% block extra_js %}{% endblock %}
 </body>
 </html>

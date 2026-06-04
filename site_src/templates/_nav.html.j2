@@ -1,20 +1,15 @@
-{# Nav partial. Takes `active` in {"about","photography","offline","resume"}. #}
-<nav class="nav" role="navigation" aria-label="Main navigation">
-  <a href="/" class="nav__logo">Jacob Brinton</a>
-  <ul class="nav__links">
-    <li><a href="/about.html"{% if active == "about" %} class="active"{% endif %}>About</a></li>
-    <li><a href="/photography.html"{% if active == "photography" %} class="active"{% endif %}>Photography</a></li>
-    <li><a href="/offline.html"{% if active == "offline" %} class="active"{% endif %}>Offline</a></li>
-    <li><a href="/resume.html"{% if active == "resume" %} class="active"{% endif %}>Resume</a></li>
+{# Nav partial. Takes `active` in {"home","about","travels","offline","resume"}. #}
+<nav class="nav" id="site-nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav__home">Jacob Brinton</a>
+  <ul class="nav__links" id="nav-links" role="list">
+    <li><a href="index.html"{% if active == "home" %} class="active"{% endif %}>Home</a></li>
+    <li><a href="about.html"{% if active == "about" %} class="active"{% endif %}>About</a></li>
+    <li><a href="travels.html"{% if active == "travels" %} class="active"{% endif %}>Travels</a></li>
+    <li><a href="offline.html"{% if active == "offline" %} class="active"{% endif %}>Offline</a></li>
+    <li><a href="resume.html"{% if active == "resume" %} class="active"{% endif %}>Resume</a></li>
   </ul>
-  <button class="nav__hamburger" aria-label="Toggle menu">
+  <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false"
+          onclick="var n=document.getElementById('site-nav');n.classList.toggle('nav--open');this.setAttribute('aria-expanded',n.classList.contains('nav--open'))">
     <span></span><span></span><span></span>
   </button>
 </nav>
-<div class="nav__overlay" aria-hidden="true">
-  <a href="/">Home</a>
-  <a href="/about.html">About</a>
-  <a href="/photography.html">Photography</a>
-  <a href="/offline.html">Offline</a>
-  <a href="/resume.html">Resume</a>
-</div>

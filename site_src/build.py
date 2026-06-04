@@ -1,111 +1,453 @@
 #!/usr/bin/env python3
 """
-site_src/build.py — regenerate HTML pages from YAML content + Jinja2 templates.
+site_src/build.py — build pipeline for jebrinton.github.io
 
 Usage (from repo root):
-    python site_src/build.py                   # build all pages
-    python site_src/build.py --page offline    # build just offline.html
-    python site_src/build.py --page about      # build just about.html
-    python site_src/build.py --check           # build to /tmp and diff against live
+    python site_src/build.py              # build all pages + regenerate CSS
+    python site_src/build.py --page home  # build just index.html
+    python site_src/build.py --check      # dry-run (no writes)
+    python site_src/build.py --images     # generate optimized WebP photos
+    python site_src/build.py --favicon    # regenerate favicon files
 
-Source of truth: site_src/content/<page>.yml
-Templates:       site_src/templates/<page>.html.j2 (+ partials)
-Output:          <repo-root>/<page>.html  (overwrites)
+Source of truth:
+    site_src/design.md         front matter → CSS tokens
+    site_src/content/<pg>.md   YAML front matter + markdown body → <pg>.html
+    site_src/static.css        layout CSS (appended to generated vars/font-faces)
 
-Hand-edits to the output files are clobbered on next build. Edit the YAML or
-the template instead.
+Output:
+    assets/site.css            generated CSS (overwritten each build)
+    <repo-root>/<page>.html    generated HTML (overwritten each build)
+
+Hand-edits to output files are clobbered on next build. Edit sources instead.
 """
 from __future__ import annotations
 
 import argparse
+import json
+import re
 import sys
 from pathlib import Path
 
 import yaml
 from jinja2 import ChainableUndefined, Environment, FileSystemLoader, select_autoescape
+import markdown as md_lib
+from markdown.preprocessors import Preprocessor
+import markdown.extensions
 
-ROOT = Path(__file__).resolve().parent.parent          # repo root
-SITE_SRC = Path(__file__).resolve().parent             # site_src/
-CONTENT_DIR = SITE_SRC / "content"
-TEMPLATES_DIR = SITE_SRC / "templates"
+ROOT      = Path(__file__).resolve().parent.parent
+SITE_SRC  = Path(__file__).resolve().parent
+CONTENT   = SITE_SRC / "content"
+TEMPLATES = SITE_SRC / "templates"
+ASSETS    = ROOT / "assets"
+NATURE    = ASSETS / "nature"
+PHOTOS    = ASSETS / "photos"
 
-# Registry of pages to build. Order matters only for CLI output.
 PAGES = [
-    # (page_name, output_filename, active_nav_slug)
-    ("offline", "offline.html", "offline"),
+    # (page_slug,  output_file,    active_nav)
+    ("index",   "index.html",   "home"),
     ("about",   "about.html",   "about"),
+    ("travels", "travels.html", "travels"),
+    ("offline", "offline.html", "offline"),
+    ("resume",  "resume.html",  "resume"),
 ]
 
 
-def load_yaml(page_name: str) -> dict:
-    yml_path = CONTENT_DIR / f"{page_name}.yml"
-    if not yml_path.exists():
-        raise FileNotFoundError(f"Missing content file: {yml_path}")
-    with yml_path.open("r", encoding="utf-8") as f:
-        data = yaml.safe_load(f) or {}
-    if not isinstance(data, dict):
-        raise ValueError(f"{yml_path} must be a YAML mapping at the top level.")
-    return data
+# ─── Design token parsing ──────────────────────────────────────────────────────
 
+def parse_design_tokens() -> dict:
+    text = (SITE_SRC / "design.md").read_text("utf-8")
+    m = re.match(r"^---\n(.*?)\n---", text, re.DOTALL)
+    if not m:
+        raise ValueError("design.md: no YAML front matter found")
+    return yaml.safe_load(m.group(1))
+
+
+# ─── CSS generation ────────────────────────────────────────────────────────────
+
+def _css_font_path(path: str) -> str:
+    """Make a font path relative to assets/site.css (strip leading 'assets/')."""
+    if path.startswith("assets/"):
+        return path[len("assets/"):]
+    return path
+
+
+def generate_css(tokens: dict) -> str:
+    parts: list[str] = []
+
+    # @font-face blocks
+    for role in ("heading", "body"):
+        font = tokens["fonts"][role]
+        for f in font["files"]:
+            woff2 = _css_font_path(f["woff2"])
+            woff  = _css_font_path(f["woff"])
+            parts.append(
+                f"@font-face {{\n"
+                f"  font-family: '{font['family']}';\n"
+                f"  font-weight: {f['weight']};\n"
+                f"  font-style: {f.get('style', 'normal')};\n"
+                f"  font-display: swap;\n"
+                f"  src: url('{woff2}') format('woff2'),\n"
+                f"       url('{woff}') format('woff');\n"
+                f"}}"
+            )
+
+    # :root custom properties
+    c  = tokens["colors"]
+    ty = tokens["type"]
+    mo = tokens["motion"]
+    la = tokens["layout"]
+    root_lines = [
+        f"  --paper: {c['paper']};",
+        f"  --paper-soft: {c['paper-soft']};",
+        f"  --ink: {c['ink']};",
+        f"  --ink-soft: {c['ink-soft']};",
+        f"  --accent: {c['accent']};",
+        f"  --rule: {c['rule']};",
+        f"  --link-underline: {c['link-underline']};",
+        f"  --heading-stack: {tokens['fonts']['heading']['stack']};",
+        f"  --body-stack: {tokens['fonts']['body']['stack']};",
+        f"  --base-size: {ty['base-size']};",
+        f"  --line-height: {ty['line-height']};",
+        f"  --measure: {ty['measure']};",
+        f"  --h1-size: {ty['scale']['h1']};",
+        f"  --h2-size: {ty['scale']['h2']};",
+        f"  --h3-size: {ty['scale']['h3']};",
+        f"  --motion-duration: {mo['duration']};",
+        f"  --content-max: {la['content-max']};",
+        f"  --page-pad: {la['page-pad']};",
+    ]
+    parts.append(":root {\n" + "\n".join(root_lines) + "\n}")
+
+    # Static layout CSS partial
+    static = SITE_SRC / "static.css"
+    if static.exists():
+        parts.append(static.read_text("utf-8"))
+
+    header = (
+        "/* AUTO-GENERATED by site_src/build.py — do not hand-edit.\n"
+        " * Edit site_src/design.md (tokens) or site_src/static.css (layout). */\n"
+    )
+    return header + "\n\n".join(parts)
+
+
+# ─── Markdown pipeline ─────────────────────────────────────────────────────────
+
+PILL_RE = re.compile(r"\{pill:\s*([^|}]+?)(?:\s*\|\s*([^}]*?))?\s*\}")
+
+
+class PillPreprocessor(Preprocessor):
+    """Convert {pill: src} and {pill: src | alt} to inline img spans."""
+
+    def run(self, lines: list[str]) -> list[str]:
+        return [PILL_RE.sub(self._sub, line) for line in lines]
+
+    @staticmethod
+    def _sub(m: re.Match) -> str:
+        src = m.group(1).strip()
+        alt = (m.group(2) or "").strip()
+        return (
+            f'<span class="pill">'
+            f'<img src="{src}" alt="{alt}" loading="lazy" decoding="async">'
+            f'</span>'
+        )
+
+
+class PillExtension(md_lib.Extension):
+    def extendMarkdown(self, md: md_lib.Markdown) -> None:
+        md.preprocessors.register(PillPreprocessor(md), "pill", 200)
+
+
+def _inject_img_attrs(html: str) -> str:
+    """Add loading=lazy and decoding=async to any <img> that lacks them."""
+    def _fix(m: re.Match) -> str:
+        tag = m.group(0)
+        if 'loading=' not in tag:
+            tag = tag[:-1] + ' loading="lazy">'
+        if 'decoding=' not in tag:
+            tag = tag[:-1] + ' decoding="async">'
+        return tag
+
+    # Only match standalone img tags (not those already inside .pill spans)
+    return re.sub(r'<img\b[^>]*>', _fix, html)
+
+
+def render_markdown(body: str) -> str:
+    md = md_lib.Markdown(
+        extensions=[
+            "footnotes",
+            "attr_list",
+            "tables",
+            "smarty",
+            PillExtension(),
+        ],
+        extension_configs={
+            "smarty": {
+                "smart_quotes": True,
+                "smart_dashes": True,
+                "smart_ellipses": True,
+            }
+        },
+    )
+    html = md.convert(body)
+    return _inject_img_attrs(html)
+
+
+# ─── Front matter parsing ──────────────────────────────────────────────────────
+
+def parse_front_matter(text: str) -> tuple[dict, str]:
+    if text.startswith("---\n"):
+        end = text.find("\n---\n", 4)
+        if end != -1:
+            fm = yaml.safe_load(text[4:end]) or {}
+            return fm, text[end + 5:]
+    return {}, text
+
+
+# ─── Photo manifest (for srcset support after --images) ───────────────────────
+
+def load_photo_manifest() -> dict:
+    manifest = PHOTOS / "manifest.json"
+    if manifest.exists():
+        return json.loads(manifest.read_text("utf-8"))
+    return {}
+
+
+def enrich_photos(photos: list[dict], manifest: dict) -> list[dict]:
+    """Add srcset and aspect-ratio data from manifest if available."""
+    enriched = []
+    for p in photos:
+        p = dict(p)
+        name = Path(p["src"]).name
+        if name in manifest:
+            info = manifest[name]
+            w1600 = f"assets/photos/{info['webp_1600']}"
+            w800  = f"assets/photos/{info['webp_800']}"
+            p["srcset"] = f"{w800} 800w, {w1600} 1600w"
+            p["src"]    = w1600   # prefer WebP src
+            if info.get("width") and info.get("height"):
+                p["ar"] = f"{info['width']}/{info['height']}"
+        enriched.append(p)
+    return enriched
+
+
+# ─── Page rendering ────────────────────────────────────────────────────────────
 
 def make_env() -> Environment:
-    env = Environment(
-        loader=FileSystemLoader(str(TEMPLATES_DIR)),
+    return Environment(
+        loader=FileSystemLoader(str(TEMPLATES)),
         autoescape=select_autoescape(["html", "htm", "xml"]),
-        undefined=ChainableUndefined,   # missing keys chain safely (card.foo.bar → empty)
-        trim_blocks=False,
-        lstrip_blocks=False,
+        undefined=ChainableUndefined,
+        trim_blocks=True,
+        lstrip_blocks=True,
     )
-    return env
 
 
-def render_page(env: Environment, page_name: str, active: str) -> str:
-    data = load_yaml(page_name)
-    template = env.get_template(f"{page_name}.html.j2")
+def render_page(env: Environment, slug: str, active: str, manifest: dict) -> str:
+    md_path = CONTENT / f"{slug}.md"
+    if not md_path.exists():
+        raise FileNotFoundError(f"Missing content file: {md_path}")
+
+    text = md_path.read_text("utf-8")
+    fm, body = parse_front_matter(text)
+    body_html = render_markdown(body)
+
+    # Enrich photos list with WebP srcset if manifest exists
+    if "photos" in fm and manifest:
+        fm["photos"] = enrich_photos(fm["photos"], manifest)
+
     ctx = {
-        "source_name": page_name,
-        "active": active,
-        **data,
+        "source_slug": slug,
+        "active": fm.pop("active", active),
+        "body_html": body_html,
+        **fm,
     }
+    template = env.get_template("_base.html.j2")
     return template.render(**ctx)
 
 
-def write_page(html: str, out_path: Path, check_only: bool = False) -> bool:
-    """Write `html` to `out_path`. Returns True if content changed."""
-    existing = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
+def write_if_changed(html: str, out: Path, check_only: bool) -> bool:
+    existing = out.read_text("utf-8") if out.exists() else ""
     if existing == html:
         return False
     if not check_only:
-        out_path.write_text(html, encoding="utf-8")
+        out.write_text(html, "utf-8")
     return True
 
 
+# ─── Image optimization ────────────────────────────────────────────────────────
+
+def optimize_images(force: bool = False) -> None:
+    try:
+        from PIL import Image as PILImage
+    except ImportError:
+        print("  ! Pillow not installed. Run: pip install Pillow", file=sys.stderr)
+        return
+
+    PHOTOS.mkdir(parents=True, exist_ok=True)
+    manifest: dict = {}
+    manifest_path = PHOTOS / "manifest.json"
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text("utf-8"))
+
+    sources = sorted(p for p in NATURE.iterdir()
+                     if p.suffix.lower() in (".jpg", ".jpeg", ".png")
+                     and not p.name.startswith("need_edit_"))
+
+    for src in sources:
+        name = src.stem
+        out_1600 = PHOTOS / f"{name}_1600.webp"
+        out_800  = PHOTOS / f"{name}_800.webp"
+        if not force and out_1600.exists() and out_800.exists():
+            continue
+
+        print(f"  → {src.name}", end=" ", flush=True)
+        with PILImage.open(src) as img:
+            orig_w, orig_h = img.size
+            img_rgb = img.convert("RGB")
+
+            def _resize_write(out_path: Path, max_w: int) -> None:
+                if orig_w > max_w:
+                    scale = max_w / orig_w
+                    new_size = (max_w, int(orig_h * scale))
+                    resized = img_rgb.resize(new_size, PILImage.LANCZOS)
+                else:
+                    resized = img_rgb
+                resized.save(str(out_path), "WEBP", quality=82, method=6)
+
+            _resize_write(out_1600, 1600)
+            _resize_write(out_800, 800)
+
+            # Record dimensions from the 1600 version
+            with PILImage.open(out_1600) as out_img:
+                w, h = out_img.size
+
+        manifest[src.name] = {
+            "webp_1600": out_1600.name,
+            "webp_800":  out_800.name,
+            "width":     w,
+            "height":    h,
+        }
+        print("done")
+
+    manifest_path.write_text(json.dumps(manifest, indent=2), "utf-8")
+    print(f"  Manifest written → {manifest_path.relative_to(ROOT)}")
+
+
+# ─── Favicon generation ────────────────────────────────────────────────────────
+
+def generate_favicon() -> None:
+    try:
+        from PIL import Image as PILImage, ImageDraw, ImageFont
+    except ImportError:
+        print("  ! Pillow not installed. Run: pip install Pillow", file=sys.stderr)
+        return
+
+    font_path = (
+        ASSETS / "fonts" / "Comico_Complete" / "Fonts" / "WEB" / "fonts"
+        / "Comico-Regular.ttf"
+    )
+    if not font_path.exists():
+        print(f"  ! Font not found: {font_path}", file=sys.stderr)
+        return
+
+    VERMILLION = (226, 85, 61)
+    PAPER      = (244, 241, 234)
+
+    def _make_icon(size: int, bg: tuple | None = None) -> PILImage.Image:
+        img = PILImage.new("RGBA", (size, size), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(img)
+        if bg:
+            draw.rectangle([0, 0, size, size], fill=bg + (255,))
+        font_size = int(size * 0.55)
+        try:
+            font = ImageFont.truetype(str(font_path), font_size)
+        except Exception:
+            font = ImageFont.load_default()
+        text = "JB"
+        bbox = draw.textbbox((0, 0), text, font=font)
+        tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        x = (size - tw) // 2 - bbox[0]
+        y = (size - th) // 2 - bbox[1]
+        draw.text((x, y), text, fill=VERMILLION + (255,), font=font)
+        return img
+
+    # favicon-32.png
+    ico32 = _make_icon(32, PAPER)
+    ico32.save(str(ROOT / "favicon-32.png"), "PNG")
+
+    # apple-touch-icon.png (180x180)
+    touch = _make_icon(180, PAPER)
+    touch.save(str(ROOT / "apple-touch-icon.png"), "PNG")
+
+    # favicon.ico (multi-size)
+    ico16 = _make_icon(16, PAPER)
+    ico48 = _make_icon(48, PAPER)
+    ico16.save(
+        str(ROOT / "favicon.ico"),
+        format="ICO",
+        sizes=[(16, 16), (32, 32), (48, 48)],
+        append_images=[ico32, ico48],
+    )
+
+    print("  Favicon files written: favicon.ico, favicon-32.png, apple-touch-icon.png")
+
+
+# ─── Main ──────────────────────────────────────────────────────────────────────
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build jebrinton.github.io pages from YAML.")
-    parser.add_argument("--page", choices=[p[0] for p in PAGES],
+    parser = argparse.ArgumentParser(description="Build jebrinton.github.io.")
+    parser.add_argument("--page",
+                        choices=[p[0] for p in PAGES],
                         help="Build only this page (default: all).")
     parser.add_argument("--check", action="store_true",
-                        help="Don't write — just report whether output would change.")
+                        help="Dry-run: report changes without writing.")
+    parser.add_argument("--images", action="store_true",
+                        help="Generate optimized WebP photos in assets/photos/.")
+    parser.add_argument("--favicon", action="store_true",
+                        help="(Re)generate favicon files.")
     args = parser.parse_args()
 
-    env = make_env()
-    pages = [p for p in PAGES if (args.page is None or p[0] == args.page)]
+    if args.images:
+        print("Optimizing images...")
+        optimize_images()
+        if not args.page and not args.favicon:
+            return 0
 
-    any_changes = False
-    for name, out_name, active in pages:
+    if args.favicon:
+        print("Generating favicon...")
+        generate_favicon()
+        if not args.page and not args.images:
+            return 0
+
+    # Generate CSS
+    tokens = parse_design_tokens()
+    css = generate_css(tokens)
+    css_path = ASSETS / "site.css"
+    css_changed = write_if_changed(css, css_path, args.check)
+    verb = "would update" if (args.check and css_changed) else ("updated" if css_changed else "no-op")
+    print(f"  {'✓' if not css_changed else '✓'} site.css  → assets/site.css  [{'changed' if css_changed else 'unchanged'}] ({verb})")
+
+    # Load photo manifest (used by travels page for srcset)
+    manifest = load_photo_manifest()
+
+    # Build pages
+    env = make_env()
+    pages_to_build = [p for p in PAGES if args.page is None or p[0] == args.page]
+    any_changes = css_changed
+
+    for slug, out_name, active in pages_to_build:
         try:
-            html = render_page(env, name, active)
+            html = render_page(env, slug, active, manifest)
         except Exception as e:
-            print(f"  \u2717 {name}: render failed — {type(e).__name__}: {e}", file=sys.stderr)
+            print(f"  ✗ {slug}: render failed — {type(e).__name__}: {e}", file=sys.stderr)
             return 2
 
         out_path = ROOT / out_name
-        changed = write_page(html, out_path, check_only=args.check)
+        changed = write_if_changed(html, out_path, args.check)
         any_changes = any_changes or changed
-        status = "changed " if changed else "unchanged"
-        mark = "\u2713"
+        status = "changed" if changed else "unchanged"
         verb = "would update" if (args.check and changed) else ("updated" if changed else "no-op")
-        print(f"  {mark} {name:<10} \u2192 {out_name:<18} [{status}] ({verb})")
+        print(f"  ✓ {slug:<10} → {out_name:<18} [{status}] ({verb})")
 
     if args.check and any_changes:
         print("\n(--check) Output would change. Run without --check to apply.")

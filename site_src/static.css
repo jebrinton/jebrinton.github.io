@@ -1,0 +1,504 @@
+/* ── Reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; text-size-adjust: 100%; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body-stack);
+  font-size: var(--base-size);
+  line-height: var(--line-height);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Nav ───────────────────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px var(--page-pad);
+  background: none; /* gradient lives in ::before, independent of nav height */
+}
+
+/* Scrim behind the nav so text stays legible over imagery (e.g. Travels).
+   Alpha follows a logistic / smootherstep S-curve instead of a linear ramp:
+   it eases out of full-opaque and eases into transparent, so there are no hard
+   edges at either end. Stays fully opaque through the nav text and a little
+   below it (~67px), then eases out and is gone by 150px — this keeps the text
+   sitting on solid paper rather than over bare imagery.
+   rgba is --paper (#f4f1ea = 244,241,234) — keep in sync if that token changes. */
+.nav::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 150px;
+  background: linear-gradient(to bottom,
+    rgba(244, 241, 234, 1)     0%,
+    rgba(244, 241, 234, 1)     45%,
+    rgba(244, 241, 234, 0.991) 50.5%,
+    rgba(244, 241, 234, 0.942) 56%,
+    rgba(244, 241, 234, 0.837) 61.5%,
+    rgba(244, 241, 234, 0.683) 67%,
+    rgba(244, 241, 234, 0.5)   72.5%,
+    rgba(244, 241, 234, 0.317) 78%,
+    rgba(244, 241, 234, 0.163) 83.5%,
+    rgba(244, 241, 234, 0.058) 89%,
+    rgba(244, 241, 234, 0.009) 94.5%,
+    rgba(244, 241, 234, 0)     100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.nav__home {
+  font-family: var(--heading-stack);
+  font-size: 18px;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1;
+}
+.nav__home:hover { filter: grayscale(40%); transition: filter var(--motion-duration); }
+
+.nav__links {
+  display: flex;
+  align-items: center; /* fix Comico glyph-metric drift between items */
+  gap: 36px;
+  list-style: none;
+  font-family: var(--heading-stack);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+}
+.nav__links li {
+  display: flex;
+  align-items: center;
+  margin-top: 0; /* cancel global `li { margin-top }` so all items share a baseline */
+}
+.nav__links a {
+  display: block;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--motion-duration), filter var(--motion-duration);
+}
+.nav__links a:hover { filter: grayscale(40%); }
+.nav__links a.active { color: var(--accent); }
+
+.nav__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav__hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--ink);
+  transition: transform var(--motion-duration), opacity var(--motion-duration);
+}
+
+/* mobile nav open state */
+.nav--open .nav__links {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--paper);
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  font-size: 20px;
+  z-index: 99;
+}
+.nav--open .nav__hamburger { z-index: 200; }
+
+/* ── Main ──────────────────────────────────────────────────────────── */
+main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--page-pad);
+}
+
+/* ── Typography ────────────────────────────────────────────────────── */
+h1 {
+  font-family: var(--heading-stack);
+  font-size: var(--h1-size);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+h2 {
+  font-family: var(--heading-stack);
+  font-size: var(--h2-size);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-top: 2.5em;
+  margin-bottom: 0.6em;
+}
+h3 {
+  font-family: var(--heading-stack);
+  font-size: var(--h3-size);
+  font-weight: 400;
+  margin-top: 2em;
+  margin-bottom: 0.4em;
+}
+
+p { margin-top: 1em; max-width: var(--measure); }
+p:first-child { margin-top: 0; }
+
+ul, ol { margin-top: 0.75em; padding-left: 1.4em; max-width: var(--measure); }
+li { margin-top: 0.3em; }
+li:first-child { margin-top: 0; }
+
+em { font-style: italic; }
+strong { font-weight: 600; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2em 0;
+}
+
+/* ── Links ─────────────────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration-color: var(--link-underline);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: filter var(--motion-duration);
+}
+a:hover { filter: grayscale(40%); }
+
+/* ── Images ─────────────────────────────────────────────────────────  */
+img { max-width: 100%; height: auto; }
+
+img.float-left {
+  float: left;
+  margin: 0.25em 1.5em 1em 0;
+  max-width: 40%;
+}
+img.float-right {
+  float: right;
+  margin: 0.25em 0 1em 1.5em;
+  max-width: 40%;
+}
+img.full {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5em 0;
+}
+.clearfix::after { content: ''; display: block; clear: both; }
+
+/* ── Pills ─────────────────────────────────────────────────────────── */
+.pill {
+  display: inline-block;
+  height: 0.85em;
+  width: 1.6em;
+  border-radius: 999px;
+  vertical-align: -0.12em;
+  margin: 0 0.07em;
+  overflow: hidden;
+  background: var(--paper-soft);
+  box-shadow: inset 0 0 0 1px rgba(26, 23, 20, 0.06);
+}
+.pill img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.pill.wide { width: 2.2em; }
+
+/* ── Home: hero ─────────────────────────────────────────────────────  */
+/* Portrait on the left, intro on the right. The intro is right-aligned so its
+   ragged edge faces the centre, and a triangular float carves the top-left of
+   the text block away — short lines up high, full-width lines lower down. */
+.hero {
+  padding: 168px 0 80px; /* breathing room between the nav and the content */
+  display: grid;
+  grid-template-columns: 300px minmax(0, 600px);
+  column-gap: clamp(56px, 7vw, 110px);
+  justify-content: center; /* keep the photo + text together near centre */
+  align-items: start;
+}
+.hero__pfp {
+  grid-column: 1;
+  grid-row: 1;
+}
+.hero__essay {
+  min-width: 0;
+  grid-column: 2;
+  grid-row: 1;
+  text-align: right;
+}
+/* Wedge that pushes the first lines in from the left to form the triangle.
+   polygon = upper-left triangle; text wraps into the lower-right of it. */
+.hero__essay::before {
+  content: '';
+  float: left;
+  width: 70%;
+  height: 7em;
+  shape-outside: polygon(0 0, 100% 0, 0 100%);
+  shape-margin: 0.6em;
+}
+
+/* Hero h1 uses the body serif (Gambetta) at a readable editorial size */
+.hero__essay h1 {
+  font-family: var(--body-stack);
+  font-size: clamp(20px, 2vw, 30px);
+  line-height: 1.45;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Square portrait photo */
+.hero__pfp img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 3px;
+  display: block;
+}
+
+/* ── Content prose pages ────────────────────────────────────────────  */
+.content {
+  padding: 140px 0 80px;
+}
+.content > h1 { margin-bottom: 1.2em; }
+
+/* ── Gallery (Travels) ──────────────────────────────────────────────  */
+.gallery-page { padding-top: 140px; }
+.gallery-page > h1 { margin-bottom: 0.4em; }
+.gallery-page > p { color: var(--ink-soft); margin-bottom: 2em; }
+
+.gallery {
+  columns: 3;
+  column-gap: 6px;
+  margin-bottom: 80px;
+}
+.gallery__item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--paper-soft);
+}
+.gallery__item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Lightbox ───────────────────────────────────────────────────────  */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 23, 20, 0.96);
+  z-index: 500;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox.lb-open { display: flex; }
+
+.lightbox__img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+}
+.lightbox__caption {
+  color: var(--paper-soft);
+  font-family: var(--body-stack);
+  font-size: 14px;
+  margin-top: 16px;
+  opacity: 0.75;
+  text-align: center;
+  max-width: 600px;
+  padding: 0 24px;
+}
+.lightbox__close {
+  position: absolute;
+  top: 20px; right: 28px;
+  color: var(--paper);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  background: none;
+  border: none;
+  opacity: 0.6;
+  font-family: var(--body-stack);
+  padding: 8px;
+  transition: opacity var(--motion-duration);
+}
+.lightbox__close:hover { opacity: 1; }
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--paper);
+  font-size: 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  opacity: 0.5;
+  padding: 20px 16px;
+  transition: opacity var(--motion-duration);
+  font-family: var(--body-stack);
+}
+.lightbox__nav:hover { opacity: 1; }
+.lightbox__prev { left: 8px; }
+.lightbox__next { right: 8px; }
+
+/* ── Resume ─────────────────────────────────────────────────────────  */
+.resume-page { padding: 140px 0 80px; }
+
+.resume-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5em;
+}
+
+.btn-download {
+  display: inline-block;
+  padding: 9px 24px;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: var(--body-stack);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background var(--motion-duration), color var(--motion-duration);
+}
+.btn-download:hover {
+  background: var(--ink);
+  color: var(--paper);
+  filter: none;
+}
+
+.resume-iframe {
+  width: 100%;
+  height: 85vh;
+  border: none;
+  display: block;
+  background: transparent;
+}
+.resume-fallback {
+  padding: 2em;
+  font-size: 15px;
+}
+
+/* ── Email honeypot — bots read DOM text; humans see CSS-generated address ── */
+.email-protect {
+  color: inherit;
+  text-decoration: none;
+  font-size: 0;            /* hide honeypot text visually */
+}
+.email-protect::after {
+  content: attr(data-u) "\40" attr(data-d);   /* \40 = @ */
+  font-size: 14px;
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+  text-underline-offset: 3px;
+}
+.email-protect:hover::after { filter: none; }
+
+/* ── Footer ─────────────────────────────────────────────────────────  */
+footer {
+  margin: 0 var(--page-pad);
+  padding: 24px 0 32px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer__email {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.footer__email a {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.footer__email a:hover { color: var(--ink); filter: none; }
+
+.footer__icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.footer__icons a {
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: color var(--motion-duration);
+}
+.footer__icons a:hover { color: var(--ink); filter: none; }
+.footer__icons svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  display: block;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────  */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+    padding-top: 120px;
+    gap: 32px;
+  }
+  .hero__essay {
+    grid-column: 1;
+    grid-row: auto; /* flow below the photo instead of sharing its cell */
+    justify-self: stretch;
+    max-width: var(--measure);
+    text-align: left; /* right-align + triangle only read at desktop width */
+  }
+  .hero__essay::before { display: none; } /* drop the wedge when stacked */
+  .hero__pfp {
+    grid-column: 1;
+    grid-row: auto;
+    order: -1; /* portrait above the intro on narrow screens */
+    max-width: 200px;
+  }
+  .gallery { columns: 2; }
+}
+
+@media (max-width: 640px) {
+  .nav { padding: 22px 24px; }
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+
+  main { padding: 0 24px; }
+  footer { margin: 0 24px; }
+
+  .hero { padding-top: 96px; } /* portrait now anchors the top; no centering offset */
+  .gallery { columns: 1; }
+
+  .resume-header { flex-direction: column; gap: 1em; }
+
+  img.float-left, img.float-right {
+    float: none;
+    margin: 1em 0;
+    max-width: 100%;
+  }
+
+  .lightbox__nav { display: none; }
+}

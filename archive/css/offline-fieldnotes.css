@@ -1,0 +1,349 @@
+/* ============================================================
+   OFFLINE — "Field Notes" layout
+   Scoped under .fieldnotes so nothing leaks into the rest of the site.
+   Uses tokens defined on :root in css/style.css.
+   ============================================================ */
+
+.fieldnotes {
+  --vignette-gap: clamp(4rem, 9vw, 10rem);
+  --frame-offset: 8px;
+  padding: var(--sp-6) var(--sp-4) var(--sp-7);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Page hero subtitle — scoped so we don't touch .page-hero globally */
+.fieldnotes-hero__subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  color: var(--text-muted);
+  max-width: 560px;
+  margin: var(--sp-2) auto 0;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   VIGNETTE — photo + caption, alternating
+   ============================================================ */
+
+.fieldnotes__vignette {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  margin-bottom: var(--vignette-gap);
+}
+
+.fieldnotes__vignette:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Alternate: even vignettes flip the photo to the right */
+.fieldnotes__vignette:nth-child(even) .fieldnotes__media {
+  order: 2;
+}
+
+.fieldnotes__vignette:nth-child(even) .fieldnotes__body {
+  order: 1;
+}
+
+/* ============================================================
+   MEDIA — pixel-art frame with 2px hard border + offset shadow
+   ============================================================ */
+
+.fieldnotes__media {
+  position: relative;
+  display: block;
+}
+
+.fieldnotes__media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translate(var(--frame-offset), var(--frame-offset));
+  border: 2px solid var(--accent);
+  border-radius: 2px;
+  z-index: 0;
+  pointer-events: none;
+  transition: transform var(--duration) var(--ease);
+}
+
+.fieldnotes__media:hover::before {
+  transform: translate(calc(var(--frame-offset) + 2px), calc(var(--frame-offset) + 2px));
+}
+
+.fieldnotes__media img,
+.fieldnotes__media .fieldnotes__placeholder {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  border-radius: 2px;
+  background: var(--bg-alt);
+  display: block;
+}
+
+/* Styled block placeholder (e.g. hockey) */
+.fieldnotes__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(251, 97, 130, 0.04) 0px,
+      rgba(251, 97, 130, 0.04) 2px,
+      transparent 2px,
+      transparent 8px
+    ),
+    linear-gradient(135deg, var(--bg-alt) 0%, var(--surface) 100%);
+  text-align: center;
+}
+
+.fieldnotes__placeholder-symbol {
+  font-size: clamp(3rem, 7vw, 4.5rem);
+  line-height: 1;
+  color: var(--accent-light);
+  filter: drop-shadow(0 0 12px rgba(251, 97, 130, 0.35));
+}
+
+.fieldnotes__placeholder-label {
+  font-family: var(--font-heading);
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   BODY — caption text
+   ============================================================ */
+
+.fieldnotes__body {
+  max-width: 46ch;
+}
+
+.fieldnotes__kicker {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: var(--sp-2);
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--bg-alt);
+}
+
+.fieldnotes__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  color: var(--cream);
+  margin-bottom: var(--sp-3);
+  line-height: 1.3;
+}
+
+.fieldnotes__caption {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--cream);
+  line-height: 1.7;
+}
+
+.fieldnotes__caption em {
+  color: var(--accent-light);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ============================================================
+   GREEN — the legendary vignette
+   Echoes .hobby-card--green::before gradient pattern.
+   ============================================================ */
+
+.fieldnotes__vignette--green .fieldnotes__media {
+  position: relative;
+}
+
+.fieldnotes__vignette--green .fieldnotes__media::before {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(135deg, var(--accent), var(--accent-light), var(--gold), var(--accent)) border-box;
+  background-size: 300% 300%;
+  animation: fieldnotesAccentShift 5s ease infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+
+.fieldnotes__vignette--green .fieldnotes__placeholder {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 179, 71, 0.08), transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(251, 97, 130, 0.12), transparent 55%),
+    linear-gradient(135deg, var(--surface) 0%, rgba(251, 97, 130, 0.08) 100%);
+}
+
+.fieldnotes__vignette--green .fieldnotes__placeholder-symbol {
+  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  filter: drop-shadow(0 0 18px rgba(255, 179, 71, 0.45));
+}
+
+.fieldnotes__vignette--green .fieldnotes__title {
+  color: var(--accent-light);
+}
+
+.fieldnotes__legendary {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--bg-deep);
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  padding: 5px 10px;
+  border-radius: 2px;
+  margin-bottom: var(--sp-2);
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--accent-light);
+}
+
+@keyframes fieldnotesAccentShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* ============================================================
+   OBSESSIONS CLUSTER — text-only "field notes in brief"
+   For items without photos that we didn't give full vignettes to.
+   (Currently unused — kept for future overflow.)
+   ============================================================ */
+
+.fieldnotes__brief {
+  margin-top: var(--vignette-gap);
+  padding: var(--sp-5) var(--sp-4);
+  border: 2px solid var(--border);
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg-deep) 100%);
+  position: relative;
+}
+
+.fieldnotes__brief-heading {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: var(--sp-3);
+}
+
+.fieldnotes__brief-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-3);
+  list-style: none;
+  padding: 0;
+}
+
+.fieldnotes__brief-list li {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--cream);
+  line-height: 1.6;
+  padding-left: var(--sp-2);
+  border-left: 2px solid var(--accent);
+}
+
+.fieldnotes__brief-list strong {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  color: var(--accent-light);
+  display: block;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   PREVIOUSLY — tiny footer strip
+   ============================================================ */
+
+.fieldnotes__previously {
+  margin-top: var(--vignette-gap);
+  padding-top: var(--sp-4);
+  border-top: 1px dashed var(--border);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.fieldnotes__previously-label {
+  color: var(--gold);
+  margin-right: var(--sp-1);
+}
+
+/* ============================================================
+   RESPONSIVE — stack on mobile
+   ============================================================ */
+
+@media (max-width: 720px) {
+  .fieldnotes {
+    --vignette-gap: 4.5rem;
+    --frame-offset: 6px;
+    padding: var(--sp-5) var(--sp-3) var(--sp-6);
+  }
+
+  .fieldnotes__vignette,
+  .fieldnotes__vignette:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: var(--sp-4);
+  }
+
+  .fieldnotes__vignette:nth-child(even) .fieldnotes__media,
+  .fieldnotes__vignette:nth-child(even) .fieldnotes__body {
+    order: initial;
+  }
+
+  .fieldnotes__body {
+    max-width: 100%;
+  }
+
+  .fieldnotes__media img,
+  .fieldnotes__media .fieldnotes__placeholder {
+    aspect-ratio: 3 / 2;
+  }
+
+  .fieldnotes__brief-list {
+    grid-template-columns: 1fr;
+    gap: var(--sp-2);
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION — disable AOS + gradient animation
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .fieldnotes [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .fieldnotes__vignette--green .fieldnotes__media::before {
+    animation: none;
+  }
+
+  .fieldnotes__media,
+  .fieldnotes__media::before {
+    transition: none;
+  }
+}

@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 &mdash; Jacob Brinton</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/site.css">
   <style>
     .four-oh-four {
       position: relative;
@@ -18,7 +18,7 @@
       justify-content: center;
       text-align: center;
       overflow: hidden;
-      background: var(--bg-deep);
+      background: var(--ink);
     }
     .four-oh-four__canvas {
       position: absolute;
@@ -34,60 +34,78 @@
     .four-oh-four__content {
       position: relative;
       z-index: 1;
-      padding: 0 var(--sp-4);
+      padding: 0 6vw;
+      color: var(--paper);
     }
     .four-oh-four__code {
-      font-family: var(--font-mono);
+      font-family: var(--heading-stack);
       font-size: clamp(5rem, 15vw, 10rem);
       color: var(--accent);
-      opacity: 0.3;
+      opacity: 0.4;
       line-height: 1;
-      margin-bottom: var(--sp-2);
+      margin-bottom: 0.5rem;
+    }
+    .four-oh-four__content h1 {
+      font-family: var(--heading-stack);
+      font-size: clamp(1.4rem, 4vw, 2.5rem);
+      font-weight: 400;
+      color: var(--paper);
+      margin-bottom: 1rem;
     }
     .four-oh-four__text {
-      font-size: var(--text-md);
-      color: var(--text-muted);
+      font-size: 16px;
+      color: var(--paper-soft);
       max-width: 500px;
-      margin: 0 auto var(--sp-4);
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+    .four-oh-four__back {
+      display: inline-block;
+      padding: 10px 28px;
+      border: 1.5px solid var(--paper);
+      color: var(--paper);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+    .four-oh-four__back:hover {
+      background: var(--paper);
+      color: var(--ink);
+      filter: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav class="nav scrolled" role="navigation" aria-label="Main navigation">
-    <a href="/" class="nav__logo">Jacob Brinton</a>
-    <ul class="nav__links">
-      <li><a href="/about.html">About</a></li>
-      <li><a href="/photography.html">Photography</a></li>
-      <li><a href="/offline.html">Offline</a></li>
-      <li><a href="/resume.html">Resume</a></li>
+  <nav class="nav" id="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav__home">Jacob Brinton</a>
+    <ul class="nav__links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="travels.html">Travels</a></li>
+      <li><a href="offline.html">Offline</a></li>
+      <li><a href="resume.html">Resume</a></li>
     </ul>
-    <button class="nav__hamburger" aria-label="Toggle menu">
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false"
+            onclick="var n=document.getElementById('site-nav');n.classList.toggle('nav--open');this.setAttribute('aria-expanded',n.classList.contains('nav--open'))">
       <span></span><span></span><span></span>
     </button>
   </nav>
-  <div class="nav__overlay" aria-hidden="true">
-    <a href="/">Home</a>
-    <a href="/about.html">About</a>
-    <a href="/photography.html">Photography</a>
-    <a href="/offline.html">Offline</a>
-    <a href="/resume.html">Resume</a>
-  </div>
 
   <section class="four-oh-four">
     <div class="four-oh-four__canvas" id="glitch-canvas"></div>
     <div class="four-oh-four__content">
       <div class="four-oh-four__code">404</div>
-      <h1 style="margin-bottom:var(--sp-2);">Lost between opinions</h1>
+      <h1>Lost between opinions</h1>
       <p class="four-oh-four__text">
-        This page got lost somewhere between my wrong opinions. It might have been right once, but I've since updated.
+        This page got lost somewhere between my wrong opinions. It might have been right once, but I&rsquo;ve since updated.
       </p>
-      <a href="/" class="btn btn--primary">Back to safety</a>
+      <a href="index.html" class="four-oh-four__back">Back to safety</a>
     </div>
   </section>
 
-  <script src="js/nav.js" defer></script>
   <script>
     // Glitching pixel art animation for 404
     (function () {
