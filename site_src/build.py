@@ -243,6 +243,10 @@ def make_env() -> Environment:
 
 
 def render_page(env: Environment, slug: str, active: str, manifest: dict) -> str:
+    if slug == "index":
+        gallery = json.loads((CONTENT / "home-gallery.json").read_text("utf-8"))
+        return env.get_template("home.html.j2").render(active="home", gallery=gallery)
+
     md_path = CONTENT / f"{slug}.md"
     if not md_path.exists():
         raise FileNotFoundError(f"Missing content file: {md_path}")

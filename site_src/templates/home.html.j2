@@ -1,0 +1,26 @@
+{# Generated from site_src/content/home-gallery.json by site_src/build.py. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Jacob Brinton</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="css/home-gallery.css">
+</head>
+<body class="home-page">
+  {% include "_nav.html.j2" %}
+  <main class="home-gallery" aria-label="Photographs">
+    {% for photo in gallery %}
+    <figure class="home-photo home-photo--{{ loop.index }}" style="--x:{{ photo.x }}%;--y:{{ photo.y }}%;--w:{{ photo.w }}%;--h:{{ photo.h }}%;--fit:{{ photo.fit }}">
+      <img src="{{ photo.src }}" alt="{{ photo.alt }}" decoding="async"{% if loop.index == 3 or loop.index == 4 %} fetchpriority="high"{% endif %}>
+    </figure>
+    {% endfor %}
+  </main>
+  {% include "_footer.html.j2" %}
+</body>
+</html>
