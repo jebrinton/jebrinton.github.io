@@ -28,8 +28,8 @@
 personal:
   name: "Jacob E. Brinton"
   email: "jbrin@bu.edu"
-  website_url: "https://jebrinton.github.io"
-  website_label: "jebrinton.github.io"
+  website_url: "https://jbrin.me"
+  website_label: "jbrin.me"
   linkedin_url: "https://linkedin.com/in/jbrinton"
   linkedin_label: "linkedin.com/in/jbrinton"
   github_url: "https://github.com/jebrinton"
@@ -190,7 +190,10 @@ projects:
   #     similarity.
   #   - Poster, New England Mechanistic Interpretability workshop (NEMI) 2025.
   - title: "The Interlingua Hypothesis: LLMs Translate via a Latent Task-agnostic Feature Space"
-    dates: "Mar 2025 -- Present"
+    dates: "Oct 2026"
+    # Accepted to EMNLP 2026 Main Conference (decision 2026-08-21), assigned Oral (2026-09-25),
+    # nominated for an EMNLP 2026 award (2026-08-28). Having a venue moves it to Publications on the CV.
+    venue: "\\textbf{J.~Brinton}, J.~Brinkmann, M.~Crovella, A.~Mueller. EMNLP 2026 (Oral; award nominee), \\href{https://arxiv.org/abs/2609.00515}{arXiv:2609.00515}"
     bullets:
       - text: "Experimented on whether LLMs translate via shared multilingual representations as opposed to pairwise mappings."
       - text: "Used gradient-based methods to identify and then causally validate components implicated in translation."
