@@ -23,6 +23,8 @@ Hand-edits to output files are clobbered on next build. Edit sources instead.
 from __future__ import annotations
 
 import argparse
+from html.parser import HTMLParser
+import math
 from datetime import date
 import json
 import re
@@ -285,6 +287,24 @@ def write_if_changed(html: str, out: Path, check_only: bool) -> bool:
     return True
 
 
+class ArticleText(HTMLParser):
+    """Extract searchable prose while keeping block boundaries readable."""
+    def __init__(self):
+        super().__init__()
+        self.parts = []
+
+    def handle_data(self, data):
+        self.parts.append(data)
+
+    def handle_endtag(self, tag):
+        if tag in {"p", "div", "li", "h1", "h2", "h3", "h4", "blockquote"}:
+            self.parts.append("\n")
+
+    def text(self):
+        return "\n".join(re.sub(r"[\t ]+", " ", line).strip()
+                         for line in "".join(self.parts).splitlines() if line.strip())
+
+
 def load_blog_posts() -> list[dict]:
     """Published essays, newest first. Drafts are excluded from all output."""
     posts = []
@@ -298,12 +318,26 @@ def load_blog_posts() -> list[dict]:
         # Filenames determine URLs; prevent paths from escaping the blog folder.
         if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", path.stem):
             raise ValueError(f"{path.name}: use a lowercase, hyphenated filename")
+        body_html = render_markdown(body)
+        prose = ArticleText()
+        prose.feed(body_html)
+        text = prose.text()
+        crossposts = list(front.get("crossposts", []))
+        if front.get("source_url") and not any(p["url"] == front["source_url"] for p in crossposts):
+            crossposts.append({"name": front.get("source_name", "LessWrong"), "url": front["source_url"]})
+        order = {"LessWrong": 0, "EA Forum": 1, "Substack": 2}
+        crossposts.sort(key=lambda p: order.get(p["name"], 3))
+        updated = date.fromisoformat(str(front["updated"])) if front.get("updated") else None
         posts.append({
             **front,
             "slug": path.stem,
             "date_iso": published.isoformat(),
             "date_label": f"{published.strftime('%B')} {published.day}, {published.year}",
-            "body_html": render_markdown(body),
+            "body_html": body_html,
+            "text": text,
+            "reading_minutes": max(1, math.ceil(len(text.split()) / 225)),
+            "crossposts": crossposts,
+            "updated_label": f"{updated.strftime('%B')} {updated.day}, {updated.year}" if updated and updated > published else None,
             "url": f"blog/{path.stem}.html",
         })
     return sorted(posts, key=lambda post: (post["date_iso"], post["slug"]), reverse=True)
@@ -485,7 +519,15 @@ def main() -> int:
         print(f"  ✓ {slug:<10} → {out_name:<18} [{status}] ({verb})")
 
     if args.page in (None, "blog"):
-        for post in load_blog_posts():
+        posts = load_blog_posts()
+        search_index = [{"title": p["title"], "slug": p["slug"], "url": "/" + p["url"],
+                         "date": p["date_iso"], "authors": p.get("authors", ["Jacob Brinton"]),
+                         "kind": p.get("kind", "essay"), "excerpt": p["text"][:240],
+                         "text": p["text"], "crossposts": p["crossposts"]} for p in posts]
+        changed = write_if_changed(json.dumps(search_index, ensure_ascii=False, indent=2) + "\n",
+                                   ROOT / "blog-search.json", args.check)
+        any_changes = any_changes or changed
+        for post in posts:
             html = env.get_template("blog-post.html.j2").render(
                 active="blog", root_path="../", post=post, title=post["title"])
             changed = write_if_changed(html, ROOT / post["url"], args.check)

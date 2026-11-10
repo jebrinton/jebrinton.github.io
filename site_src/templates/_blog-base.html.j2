@@ -17,9 +17,18 @@
 <body class="blog-page">
   <a class="skip-link" href="#main-content">Skip to content</a>
   {% include "_nav.html.j2" %}
+  <button type="button" class="search-toggle" data-search-index="{{ root_path }}blog-search.json" aria-haspopup="dialog" aria-controls="blog-search" aria-expanded="false" hidden>Search <kbd>⌘ K</kbd></button>
+  <dialog id="blog-search" class="search-dialog" aria-labelledby="search-label">
+    <div class="search-header"><label id="search-label" for="search-input">Search posts</label><button type="button" class="search-close" aria-label="Close search">×</button></div>
+    <input id="search-input" type="search" placeholder="Search words or titles" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="search-results" aria-expanded="true">
+    <p class="search-message" role="status"></p>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Matching posts"></ul>
+    <p class="search-help">↑ ↓ to choose · Enter to open · Esc to close</p>
+  </dialog>
   <main id="main-content" class="blog-main">
     {% block content %}{% endblock %}
   </main>
   {% include "_footer.html.j2" %}
+  <script src="{{ root_path }}js/blog.js" defer></script>
 </body>
 </html>

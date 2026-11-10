@@ -3,6 +3,9 @@ title: OpenAtom and Elemental
 date: 2026-11-09
 source_url: https://www.lesswrong.com/posts/MyepmzXbjmYuG6MfT/openatom-and-elemental-1
 source_name: LessWrong
+crossposts:
+- name: Substack
+  url: https://jebrinton.substack.com/p/openatom-and-elemental
 ---
 
 <h2 id="2012">2012</h2>

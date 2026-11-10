@@ -29,15 +29,28 @@
           onclick="var n=document.getElementById('site-nav');n.classList.toggle('nav--open');this.setAttribute('aria-expanded',n.classList.contains('nav--open'))">
     <span></span><span></span><span></span>
   </button>
-</nav>  <main id="main-content" class="blog-main">
+</nav>  <button type="button" class="search-toggle" data-search-index="../blog-search.json" aria-haspopup="dialog" aria-controls="blog-search" aria-expanded="false" hidden>Search <kbd>⌘ K</kbd></button>
+  <dialog id="blog-search" class="search-dialog" aria-labelledby="search-label">
+    <div class="search-header"><label id="search-label" for="search-input">Search posts</label><button type="button" class="search-close" aria-label="Close search">×</button></div>
+    <input id="search-input" type="search" placeholder="Search words or titles" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="search-results" aria-expanded="true">
+    <p class="search-message" role="status"></p>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Matching posts"></ul>
+    <p class="search-help">↑ ↓ to choose · Enter to open · Esc to close</p>
+  </dialog>
+  <main id="main-content" class="blog-main">
+  <div class="reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
   <article class="blog-article">
     <header class="article-heading">
       <a class="back-to-blog" href="../blog.html">Blog</a>
       <h1>OpenAtom and Elemental</h1>
       <div class="article-meta">
         <time datetime="2026-11-09">November 9, 2026</time>
-<a href="https://www.lesswrong.com/posts/MyepmzXbjmYuG6MfT/openatom-and-elemental-1">Also on LessWrong</a>      </div>
+<span>6 min read</span><span class="crosspost-links"><a href="https://www.lesswrong.com/posts/MyepmzXbjmYuG6MfT/openatom-and-elemental-1">LessWrong</a><span aria-hidden="true"> · </span><a href="https://jebrinton.substack.com/p/openatom-and-elemental">Substack</a></span>      </div>
     </header>
+    <details class="reading-outline" hidden>
+      <summary>Contents</summary>
+      <nav aria-label="Article outline"><span class="outline-label" aria-hidden="true">Contents</span><ol class="outline-list"></ol></nav>
+    </details>
     <div class="article-body"><h2 id="2012">2012</h2>
 
 <p>Compact nuclear power had long been considered intractable for civilian use. But on a cold December day, at an alternative energy conference, a team of academics reveals a new discovery: charging up small nuclear reactors over several days at high energy can produce clean power output. It is not yet competitive with other energy sources, but it does seem promising. The name of this new technology is Compact Nuclear Power (CNP).</p>
@@ -138,5 +151,6 @@
   document.querySelectorAll('a.email-protect').forEach(function(a) {
     a.href = 'mailto:' + a.dataset.u + '\x40' + a.dataset.d;
   });
-</script></body>
+</script>  <script src="../js/blog.js" defer></script>
+</body>
 </html>

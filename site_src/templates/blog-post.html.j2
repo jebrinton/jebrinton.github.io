@@ -1,14 +1,23 @@
 {% extends "_blog-base.html.j2" %}
 {% block content %}
+  <div class="reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
   <article class="blog-article">
     <header class="article-heading">
       <a class="back-to-blog" href="../blog.html">Blog</a>
+      {% if post.kind == "quick-take" %}<p class="article-kind">Quick take</p>{% endif %}
       <h1>{{ post.title | e }}</h1>
+      {% if post.authors %}<p class="article-authors">By {{ post.authors | join(', ') | e }}</p>{% endif %}
       <div class="article-meta">
         <time datetime="{{ post.date_iso | e }}">{{ post.date_label | e }}</time>
-        {% if post.source_url %}<a href="{{ post.source_url | e }}">Also on {{ post.source_name | default('LessWrong') | e }}</a>{% endif %}
+        {% if post.reading_minutes %}<span>{{ post.reading_minutes }} min read</span>{% endif %}
+        {% if post.updated_label %}<span>Updated {{ post.updated_label | e }}</span>{% endif %}
+        {% if post.crossposts %}<span class="crosspost-links">{% for crosspost in post.crossposts %}<a href="{{ crosspost.url | e }}">{{ crosspost.name | e }}</a>{% if not loop.last %}<span aria-hidden="true"> · </span>{% endif %}{% endfor %}</span>{% endif %}
       </div>
     </header>
+    <details class="reading-outline" hidden>
+      <summary>Contents</summary>
+      <nav aria-label="Article outline"><span class="outline-label" aria-hidden="true">Contents</span><ol class="outline-list"></ol></nav>
+    </details>
     <div class="article-body">{{ post.body_html | safe }}</div>
   </article>
 {% endblock %}

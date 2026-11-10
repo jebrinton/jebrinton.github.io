@@ -29,12 +29,44 @@
           onclick="var n=document.getElementById('site-nav');n.classList.toggle('nav--open');this.setAttribute('aria-expanded',n.classList.contains('nav--open'))">
     <span></span><span></span><span></span>
   </button>
-</nav>  <main id="main-content" class="blog-main">
+</nav>  <button type="button" class="search-toggle" data-search-index="blog-search.json" aria-haspopup="dialog" aria-controls="blog-search" aria-expanded="false" hidden>Search <kbd>⌘ K</kbd></button>
+  <dialog id="blog-search" class="search-dialog" aria-labelledby="search-label">
+    <div class="search-header"><label id="search-label" for="search-input">Search posts</label><button type="button" class="search-close" aria-label="Close search">×</button></div>
+    <input id="search-input" type="search" placeholder="Search words or titles" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="search-results" aria-expanded="true">
+    <p class="search-message" role="status"></p>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Matching posts"></ul>
+    <p class="search-help">↑ ↓ to choose · Enter to open · Esc to close</p>
+  </dialog>
+  <main id="main-content" class="blog-main">
   <header class="blog-heading"><h1>Blog</h1></header>
   <ol class="blog-list">
     <li class="blog-entry">
       <time datetime="2026-11-09">November 9, 2026</time>
       <h2><a href="blog/openatom-and-elemental.html">OpenAtom and Elemental</a></h2>
+    </li>
+    <li class="blog-entry">
+      <time datetime="2026-11-05">November 5, 2026</time>
+      <h2><a href="blog/catastrophic-talent-misallocation.html">Catastrophic Talent Misallocation</a></h2>
+    </li>
+    <li class="blog-entry">
+      <time datetime="2026-10-21">October 21, 2026</time>
+      <h2><a href="blog/talk-to-people-at-happy-hours.html">Talk to people at happy hours</a></h2>
+    </li>
+    <li class="blog-entry">
+      <time datetime="2026-08-17">August 17, 2026</time>
+      <h2><a href="blog/lateral-workshop-applications-a-case-study.html">Lateral Workshop Applications: A Case Study</a></h2>
+    </li>
+    <li class="blog-entry">
+      <time datetime="2026-08-14">August 14, 2026</time>
+      <h2><a href="blog/what-mormons-get-right-about-community-building.html">What Mormons get right about community building</a></h2>
+    </li>
+    <li class="blog-entry">
+      <time datetime="2026-08-04">August 4, 2026</time>
+      <h2><a href="blog/announcing-lateral-workshop-for-experienced-professionals.html">Announcing Lateral Workshop for experienced professionals moving into AI safety</a></h2>
+    </li>
+    <li class="blog-entry">
+      <time datetime="2026-02-17">February 17, 2026</time>
+      <h2><a href="blog/the-multi-agent-minefield-can-llms-cooperate-to-avoid-global.html">The Multi-Agent Minefield: Can LLMs Cooperate to Avoid Global Catastrophe?</a></h2>
     </li>
   </ol>
   </main>
@@ -63,5 +95,6 @@
   document.querySelectorAll('a.email-protect').forEach(function(a) {
     a.href = 'mailto:' + a.dataset.u + '\x40' + a.dataset.d;
   });
-</script></body>
+</script>  <script src="js/blog.js" defer></script>
+</body>
 </html>

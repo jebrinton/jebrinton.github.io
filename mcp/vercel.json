@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/mcp.js": { "maxDuration": 15, "excludeFiles": "{test/**,README.md}" }
+  },
+  "rewrites": [{ "source": "/mcp", "destination": "/api/mcp" }]
+}
