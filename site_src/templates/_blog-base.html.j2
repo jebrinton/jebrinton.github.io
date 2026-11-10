@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{{ title | e }} — Jacob Brinton</title>
+  <meta property="og:title" content="{{ title | e }}">
+  <meta property="og:type" content="{% if post %}article{% else %}website{% endif %}">
+  {% if post %}<meta property="article:published_time" content="{{ post.date_iso | e }}">{% endif %}
+  <link rel="canonical" href="https://jbrin.me/{% if post %}{{ post.url | e }}{% else %}blog.html{% endif %}">
+  <link rel="icon" href="{{ root_path }}favicon.ico">
+  <link rel="apple-touch-icon" href="{{ root_path }}apple-touch-icon.png">
+  <link rel="stylesheet" href="{{ root_path }}assets/site.css">
+  <link rel="stylesheet" href="{{ root_path }}css/blog.css">
+</head>
+<body class="blog-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  {% include "_nav.html.j2" %}
+  <main id="main-content" class="blog-main">
+    {% block content %}{% endblock %}
+  </main>
+  {% include "_footer.html.j2" %}
+</body>
+</html>

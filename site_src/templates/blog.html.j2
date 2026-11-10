@@ -1,0 +1,12 @@
+{% extends "_blog-base.html.j2" %}
+{% block content %}
+  <header class="blog-heading"><h1>Blog</h1></header>
+  <ol class="blog-list">
+    {% for post in posts %}
+    <li class="blog-entry">
+      <time datetime="{{ post.date_iso | e }}">{{ post.date_label | e }}</time>
+      <h2><a href="{{ post.url | e }}">{{ post.title | e }}</a></h2>
+    </li>
+    {% endfor %}
+  </ol>
+{% endblock %}

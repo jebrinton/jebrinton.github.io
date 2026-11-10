@@ -23,6 +23,7 @@ Hand-edits to output files are clobbered on next build. Edit sources instead.
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import json
 import re
 import sys
@@ -46,6 +47,7 @@ PAGES = [
     # (page_slug,  output_file,    active_nav)
     ("index",   "index.html",   "home"),
     ("about",   "about.html",   "about"),
+    ("blog",    "blog.html",    "blog"),
     ("travels", "travels.html", "travels"),
     ("offline", "offline.html", "offline"),
     ("resume",  "resume.html",  "resume"),
@@ -247,6 +249,10 @@ def render_page(env: Environment, slug: str, active: str, manifest: dict) -> str
         gallery = json.loads((CONTENT / "home-gallery.json").read_text("utf-8"))
         return env.get_template("home.html.j2").render(active="home", gallery=gallery)
 
+    if slug == "blog":
+        return env.get_template("blog.html.j2").render(
+            active="blog", title="Blog", posts=load_blog_posts(), root_path="")
+
     md_path = CONTENT / f"{slug}.md"
     if not md_path.exists():
         raise FileNotFoundError(f"Missing content file: {md_path}")
@@ -274,8 +280,33 @@ def write_if_changed(html: str, out: Path, check_only: bool) -> bool:
     if existing == html:
         return False
     if not check_only:
+        out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, "utf-8")
     return True
+
+
+def load_blog_posts() -> list[dict]:
+    """Published essays, newest first. Drafts are excluded from all output."""
+    posts = []
+    for path in sorted((CONTENT / "blog").glob("*.md")):
+        front, body = parse_front_matter(path.read_text("utf-8"))
+        if front.get("draft", False):
+            continue
+        if not front.get("title") or not front.get("date"):
+            raise ValueError(f"{path.name}: title and date are required")
+        published = date.fromisoformat(str(front["date"]))
+        # Filenames determine URLs; prevent paths from escaping the blog folder.
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", path.stem):
+            raise ValueError(f"{path.name}: use a lowercase, hyphenated filename")
+        posts.append({
+            **front,
+            "slug": path.stem,
+            "date_iso": published.isoformat(),
+            "date_label": f"{published.strftime('%B')} {published.day}, {published.year}",
+            "body_html": render_markdown(body),
+            "url": f"blog/{path.stem}.html",
+        })
+    return sorted(posts, key=lambda post: (post["date_iso"], post["slug"]), reverse=True)
 
 
 # ─── Image optimization ────────────────────────────────────────────────────────
@@ -452,6 +483,14 @@ def main() -> int:
         status = "changed" if changed else "unchanged"
         verb = "would update" if (args.check and changed) else ("updated" if changed else "no-op")
         print(f"  ✓ {slug:<10} → {out_name:<18} [{status}] ({verb})")
+
+    if args.page in (None, "blog"):
+        for post in load_blog_posts():
+            html = env.get_template("blog-post.html.j2").render(
+                active="blog", root_path="../", post=post, title=post["title"])
+            changed = write_if_changed(html, ROOT / post["url"], args.check)
+            any_changes = any_changes or changed
+            print(f"  ✓ {post['url']} [{'changed' if changed else 'unchanged'}]")
 
     if args.check and any_changes:
         print("\n(--check) Output would change. Run without --check to apply.")

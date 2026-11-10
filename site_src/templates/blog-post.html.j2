@@ -1,0 +1,14 @@
+{% extends "_blog-base.html.j2" %}
+{% block content %}
+  <article class="blog-article">
+    <header class="article-heading">
+      <a class="back-to-blog" href="../blog.html">Blog</a>
+      <h1>{{ post.title | e }}</h1>
+      <div class="article-meta">
+        <time datetime="{{ post.date_iso | e }}">{{ post.date_label | e }}</time>
+        {% if post.source_url %}<a href="{{ post.source_url | e }}">Also on {{ post.source_name | default('LessWrong') | e }}</a>{% endif %}
+      </div>
+    </header>
+    <div class="article-body">{{ post.body_html | safe }}</div>
+  </article>
+{% endblock %}
