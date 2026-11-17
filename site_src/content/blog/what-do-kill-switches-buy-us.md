@@ -9,6 +9,8 @@ crossposts:
   url: https://jebrinton.substack.com/p/what-do-kill-switches-buy-us
 ---
 
+![A red emergency stop switch connected to a distant illuminated datacenter at dusk.](/assets/blog/kill-switches-cover.png)
+
 ## Summary
 Installing kill switches in every US datacenter could help avert some catastrophes, and might even reduce extinction risk a little, but mainly through indirect effects. The legibility of this means it's an early choice for politicians to be seen doing something about AI risk, and could be worth advocacy energy if implementation could build into further verification/transparency efforts.
 
