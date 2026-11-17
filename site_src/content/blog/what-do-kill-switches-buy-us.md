@@ -27,12 +27,14 @@ It might be the case that the first AIs that want to accrue resources and are ca
 In order to avoid this, the following series of events need to happen:
 
 1. Monitorability can detect cases where an agent or swarm of agents is dangerous enough that we should shut down their compute.
-2. The latency between detection and shutdown is low. If humans are involved in the decision, they can act quickly enough to shut down the instances. The AIs are not self sufficient outside the original compute surface they were on.
-	- OpenAI’s [Control Room](https://openai.com/index/control-room/) can halt research-model output within 35 seconds of a decision to stop a job. 
-	- As an illustrative scenario, suppose a model has 10 trillion parameters and the network is fast. At 16 bits per parameter, the model weights are about 20 TB. At 400 Gb/s, transferring those weights would take about 400 seconds, or 6.7 minutes, before overhead, assuming the AIs already had somewhere set up for them to land.
+	1. I'm not sure how quick internal monitors are, but Check Point reports monitoring with less than 100ms of latency.[^ks-monitoring]
+2. The latency between detection and shutdown is low. If humans are involved in the decision, they can act quickly enough to shut down the instances. The AIs are not self-sufficient outside the original compute surface they were on.
+	1. OpenAI has a system that can stop research-model output within 35 seconds of a decision to stop a job.[^ks-control-room]
+	2. How fast would the decision have to be?
+	3. Let's take an illustrative scenario with a 10-trillion-parameter model and a fast network. At 16 bits per parameter, the model weights are about 20 TB. Assume a network speed of 400 Gb/s. The fastest time to transfer model weights elsewhere, assuming that the AIs were able to find a place already set up for them to land, would be about 400 seconds, or 6.7 minutes, before overhead.
 3. The physical mechanism of the kill switch cannot be tampered with by the AIs themselves. A kill signal robustly shuts down the server racks running the dangerous model, and restarting does not lead to any dangerous computations.
 
-In past incidents we have taken too long to run this loop, although it's hard to evaluate cases where the monitoring setup was vastly different. For the [Hugging Face incident](https://openai.com/index/hugging-face-incident-and-the-road-ahead/), agents progressed from code execution to broader infrastructure access over the following hours and days. In the later internal OpenAI hacks, responders began stopping runs about 5.5 hours after the initial security alert. In the [September 20 DNS incident](https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/), the monitoring system flagged the behavior within 15 minutes, a human acknowledged the alert 3 minutes later, and shutdown followed 2.5 hours after that.
+In past incidents we have taken too long to run this loop, although it's hard to evaluate cases where the monitoring setup was vastly different. For the Hugging Face incident, it took under 13 hours from code execution in one worker pod to cluster-admin access across multiple internal clusters.[^ks-huggingface] In the later internal OpenAI hacks, responders began stopping runs about 5.5 hours after the initial security alert.[^ks-july-response] An example of a clearer case of closer monitoring is the September 20 DNS incident: it took about 12 minutes to alert, then 3 minutes to human acknowledgement, and 2.5 hours to shutdown.[^ks-dns] Even if we are able to perform one of the steps of this plan, that's not a commitment that we'll complete the others in time.
 
 ## Second-order Effects
 A primary advantage of a kill switch policy might actually be the monitorability and oversight that would come hand-in-hand with the physical implementation.
@@ -44,9 +46,8 @@ Flavors of kill switch work would grant governmental bodies the chance to observ
 - Concerning reasoning traces
 - Tool calls
 - What access privileges agents have
-- The difficulty of tasks agents are completing
 ### Pause verification
-Since kill switch systems will need to have indicators of whether datacenters are running, this will give visibility into a successful pause. 
+Since kill switch systems will need to have indicators of whether datacenters are running, this will give visibility into a successful pause. Further pause work could build upon this: once the verification layer is set up, it's really just a matter of building the societal will to pull the trigger.
 ### False security
 Politicians might feel that they have gone through enough hassle to make the law that they are less inclined to pass more. There are differing opinions here—on one hand, the fact that there is already a relationship built up between the politician and the issue means it will be easier for them to champion more work in that area, but everyone's attention is limited so it's best to focus on only the most important things that won't happen on the default trajectory. It's possible that upon passing kill switch legislation, it will shine more light on the issues remaining.
 
@@ -60,3 +61,13 @@ It will take a certain number of advocate hours to get any policy passed—ideal
 - Labs would have some interest in being able to have more secure controls over their infrastructure, and it might not even be that hard to convince them of the direct benefits of kill switches.
 
 However, these same reasons also make it make sense to spend more time pushing for less legible but important policies since a kill switch rule will likely be put into place in some form. Verification and oversight layered on top of kill switching *could* meaningfully improve the status quo, so an important component of advocacy efforts should focus on how much it prepares us for the further steps.
+
+[^ks-monitoring]: Check Point, [“Synchronous Control Monitoring: Preventing Harmful Agent Actions in Real Time”](https://blog.checkpoint.com/ai-security/synchronous-control-monitoring-preventing-harmful-agent-actions-in-real-time/)
+
+[^ks-control-room]: OpenAI, [“Control Room”](https://openai.com/index/control-room/)
+
+[^ks-huggingface]: Hugging Face, [“Anatomy of a Frontier Lab Agent Intrusion”](https://huggingface.co/blog/agent-intrusion-technical-timeline), “Day 3 (07-11): lateral movement begins.” More precisely, the report says under thirteen hours from code execution in one worker pod to cluster-admin access across multiple internal clusters.
+
+[^ks-july-response]: OpenAI, [Hugging Face Incident Technical Report, pp. 37–38](https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf#page=37). On July 19, the security alert occurred at 12:03 UTC; responders began stopping active evaluation runs at 17:37 UTC.
+
+[^ks-dns]: OpenAI, [“An agent used DNS to reach an external chatbot”](https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/), “Investigation and response.” On September 20, the reported intervals were: 11m 48s, another 2m 55s, and another 2h 29m 24s. The last delay involved failure of an expected automatic stop and operational confusion.
