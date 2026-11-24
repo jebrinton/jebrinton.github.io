@@ -50,7 +50,7 @@ photos:
     alt: Stormy ridge above Snowbird
 
   - src: assets/nature/dubai_courtyard_pool.jpeg
-    alt: Courtyard pool, Dubai
+    alt: Courtyard pool, Istanbul
 
   - src: assets/nature/coyote_gulch_canyon_walls.jpeg
     alt: Canyon walls in Coyote Gulch

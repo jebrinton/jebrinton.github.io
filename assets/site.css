@@ -347,6 +347,14 @@ img.full {
 }
 .content > h1 { margin-bottom: 1.2em; }
 
+.travel-map { margin: 1.25em 0; }
+.travel-map figcaption { display: flex; gap: 1.3em; margin-bottom: .6em; }
+.travel-map figcaption span { display: inline-flex; align-items: center; gap: .4em; }
+.travel-map figcaption span::before { content: ""; width: .75em; height: .75em; background-color: var(--swatch); }
+.travel-map__lived { --swatch: #245c40; }
+.travel-map__visited { --swatch: #2288bc; }
+.travel-map img { display: block; width: 100%; height: auto; }
+
 /* ── Gallery (Travels) ──────────────────────────────────────────────  */
 .gallery-page { padding-top: 140px; }
 .gallery-page > h1 { margin-bottom: 0.4em; }
