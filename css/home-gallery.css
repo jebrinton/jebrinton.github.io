@@ -1,7 +1,7 @@
-/* Homepage composition. Photo positions live in site_src/content/home-gallery.json. */
-@font-face{font-family:Karrik;src:url('../assets/fonts/karrik/Karrik-Regular.otf') format('opentype');font-display:swap}
-.home-page .nav__home,.home-page .nav__links{font-family:Karrik,sans-serif;letter-spacing:0;font-size:24.3px}
-.home-page .footer__email{font-family:Karrik,sans-serif;font-size:18.9px}
+/* Homepage composition. Photo positions live in site_src/content/home-gallery.json.
+   The mobile rules below are keyed by a photo's position in that file (1-based),
+   so adding, removing or reordering an entry there means renumbering them here. */
+.home-page .footer__email{--email-size:18.9px}
 .home-page{height:100vh;height:100dvh;min-height:0;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr) auto}
 .home-page .nav{position:relative;padding:32px 6%;z-index:100}
 .home-page .nav::before{display:none}

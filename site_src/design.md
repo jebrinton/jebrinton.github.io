@@ -8,12 +8,12 @@
 # =============================================================================
 
 fonts:
-  # Headings — Comico (display). One weight only.
+  # Headings — Karrik. One weight only.
   heading:
-    family: Comico
-    stack: '"Comico", Georgia, serif'
+    family: Karrik
+    stack: '"Karrik", sans-serif'
     files:
-      - { weight: 400, style: normal, woff2: assets/fonts/Comico_Complete/Fonts/WEB/fonts/Comico-Regular.woff2, woff: assets/fonts/Comico_Complete/Fonts/WEB/fonts/Comico-Regular.woff }
+      - { weight: 400, style: normal, otf: assets/fonts/karrik/Karrik-Regular.otf }
   # Body — Gambetta (serif text face). Several weights + italics available.
   body:
     family: Gambetta
@@ -67,7 +67,7 @@ Warm paper, ink-on-paper serif, lots of whitespace. Editorial, calm, personal �
 
 ## Type
 
-- **Headings:** Comico. **Body:** Gambetta. Both self-hosted (see front matter).
+- **Headings and navigation:** Karrik. **Body:** Gambetta. Both self-hosted.
 - Big-serif display `h1` on Home; generous line-height and a capped line length
   (`measure`) for readability.
 - Italics (Gambetta italic) are the main emphasis tool, like in the mockup.

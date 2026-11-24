@@ -52,10 +52,12 @@ body {
   pointer-events: none;
 }
 
-.nav__home {
+.nav__home, .nav__links {
   font-family: var(--heading-stack);
-  font-size: 18px;
-  letter-spacing: 0.01em;
+  font-size: 24.3px;
+}
+
+.nav__home {
   color: var(--ink);
   text-decoration: none;
   line-height: 1;
@@ -64,12 +66,9 @@ body {
 
 .nav__links {
   display: flex;
-  align-items: center; /* fix Comico glyph-metric drift between items */
+  align-items: center;
   gap: 36px;
   list-style: none;
-  font-family: var(--heading-stack);
-  font-size: 18px;
-  letter-spacing: 0.08em;
 }
 .nav__links li {
   display: flex;
@@ -131,14 +130,12 @@ h1 {
   font-size: var(--h1-size);
   line-height: 1.05;
   font-weight: 400;
-  letter-spacing: -0.02em;
   color: var(--ink);
 }
 h2 {
   font-family: var(--heading-stack);
   font-size: var(--h2-size);
   font-weight: 400;
-  letter-spacing: -0.01em;
   margin-top: 2.5em;
   margin-bottom: 0.6em;
 }
@@ -410,7 +407,7 @@ img.full {
 }
 .email-protect::after {
   content: attr(data-u) "\40" attr(data-d);   /* \40 = @ */
-  font-size: 14px;
+  font-size: var(--email-size, 14px);
   text-decoration: underline;
   text-decoration-color: var(--link-underline);
   text-underline-offset: 3px;
@@ -427,7 +424,7 @@ footer {
   align-items: center;
 }
 .footer__email {
-  font-size: 14px;
+  font-family: var(--heading-stack);
   color: var(--ink-soft);
 }
 .footer__email a {

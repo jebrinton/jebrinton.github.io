@@ -82,16 +82,18 @@ def generate_css(tokens: dict) -> str:
     for role in ("heading", "body"):
         font = tokens["fonts"][role]
         for f in font["files"]:
-            woff2 = _css_font_path(f["woff2"])
-            woff  = _css_font_path(f["woff"])
+            sources = ",\n       ".join(
+                f"url('{_css_font_path(f[key])}') format('{fmt}')"
+                for key, fmt in (("woff2", "woff2"), ("woff", "woff"), ("otf", "opentype"))
+                if key in f
+            )
             parts.append(
                 f"@font-face {{\n"
                 f"  font-family: '{font['family']}';\n"
                 f"  font-weight: {f['weight']};\n"
                 f"  font-style: {f.get('style', 'normal')};\n"
                 f"  font-display: swap;\n"
-                f"  src: url('{woff2}') format('woff2'),\n"
-                f"       url('{woff}') format('woff');\n"
+                f"  src: {sources};\n"
                 f"}}"
             )
 
@@ -246,7 +248,17 @@ def make_env() -> Environment:
     )
 
 
-def render_page(env: Environment, slug: str, active: str, manifest: dict) -> str:
+def page_is_draft(slug: str) -> bool:
+    """A page with `draft: true` in its front matter is not published."""
+    md_path = CONTENT / f"{slug}.md"
+    if not md_path.exists():
+        return False
+    front, _ = parse_front_matter(md_path.read_text("utf-8"))
+    return bool(front.get("draft", False))
+
+
+def render_page(env: Environment, slug: str, active: str, manifest: dict,
+                base_href: str = "") -> str:
     if slug == "index":
         gallery = json.loads((CONTENT / "home-gallery.json").read_text("utf-8"))
         return env.get_template("home.html.j2").render(active="home", gallery=gallery)
@@ -271,6 +283,7 @@ def render_page(env: Environment, slug: str, active: str, manifest: dict) -> str
         "source_slug": slug,
         "active": fm.pop("active", active),
         "body_html": body_html,
+        "base_href": base_href,
         **fm,
     }
     template = env.get_template("_base.html.j2")
@@ -470,6 +483,8 @@ def main() -> int:
                         help="Build only this page (default: all).")
     parser.add_argument("--check", action="store_true",
                         help="Dry-run: report changes without writing.")
+    parser.add_argument("--drafts", action="store_true",
+                        help="Also render draft pages into _drafts/ for local preview.")
     parser.add_argument("--images", action="store_true",
                         help="Generate optimized WebP photos in assets/photos/.")
     parser.add_argument("--favicon", action="store_true",
@@ -501,22 +516,33 @@ def main() -> int:
 
     # Build pages
     env = make_env()
+    drafts = {p[0] for p in PAGES if page_is_draft(p[0])}
+    env.globals["draft_pages"] = drafts
     pages_to_build = [p for p in PAGES if args.page is None or p[0] == args.page]
     any_changes = css_changed
 
     for slug, out_name, active in pages_to_build:
+        is_draft = slug in drafts
+        if is_draft and not args.drafts:
+            stale = "; delete it to unpublish" if (ROOT / out_name).exists() else ""
+            note = f"{out_name} still exists{stale}" if stale else "use --drafts to preview"
+            print(f"  – {slug:<10} draft, not built ({note})")
+            continue
         try:
-            html = render_page(env, slug, active, manifest)
+            # Draft previews sit one folder down, so <base> points them back at the root.
+            html = render_page(env, slug, active, manifest,
+                               base_href="../" if is_draft else "")
         except Exception as e:
             print(f"  ✗ {slug}: render failed — {type(e).__name__}: {e}", file=sys.stderr)
             return 2
 
-        out_path = ROOT / out_name
+        out_path = (ROOT / "_drafts" if is_draft else ROOT) / out_name
+        shown = f"_drafts/{out_name}" if is_draft else out_name
         changed = write_if_changed(html, out_path, args.check)
         any_changes = any_changes or changed
         status = "changed" if changed else "unchanged"
         verb = "would update" if (args.check and changed) else ("updated" if changed else "no-op")
-        print(f"  ✓ {slug:<10} → {out_name:<18} [{status}] ({verb})")
+        print(f"  ✓ {slug:<10} → {shown:<18} [{status}] ({verb})")
 
     if args.page in (None, "blog"):
         posts = load_blog_posts()

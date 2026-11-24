@@ -1,9 +1,5 @@
 ---
 title: Offline
 active: offline
-description: Jacob Brinton offline — skiing, crosswords, the outdoors.
+draft: true
 ---
-
-# Offline
-
-Under construction...

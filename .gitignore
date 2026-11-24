@@ -25,3 +25,6 @@ _raw_photos/
 
 # Local working notes / seed prompts
 seed_prompts/
+
+# Local previews of unpublished pages
+/_drafts/

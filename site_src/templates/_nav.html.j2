@@ -3,11 +3,19 @@
   <a href="{{ root_path | default('') }}index.html" class="nav__home">Jacob Brinton</a>
   <ul class="nav__links" id="nav-links" role="list">
     <li><a href="{{ root_path | default('') }}index.html"{% if active == "home" %} class="active"{% endif %}>Home</a></li>
+    {% if "about" not in draft_pages %}
     <li><a href="{{ root_path | default('') }}about.html"{% if active == "about" %} class="active"{% endif %}>About</a></li>
+    {% endif %}
     <li><a href="{{ root_path | default('') }}blog.html"{% if active == "blog" %} class="active" aria-current="page"{% endif %}>Blog</a></li>
+    {% if "travels" not in draft_pages %}
     <li><a href="{{ root_path | default('') }}travels.html"{% if active == "travels" %} class="active"{% endif %}>Travels</a></li>
+    {% endif %}
+    {% if "offline" not in draft_pages %}
     <li><a href="{{ root_path | default('') }}offline.html"{% if active == "offline" %} class="active"{% endif %}>Offline</a></li>
+    {% endif %}
+    {% if "resume" not in draft_pages %}
     <li><a href="{{ root_path | default('') }}resume.html"{% if active == "resume" %} class="active"{% endif %}>Resume</a></li>
+    {% endif %}
   </ul>
   <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false"
           onclick="var n=document.getElementById('site-nav');n.classList.toggle('nav--open');this.setAttribute('aria-expanded',n.classList.contains('nav--open'))">
