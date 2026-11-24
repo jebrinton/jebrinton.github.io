@@ -50,7 +50,7 @@ Counterarguments
 	2. It would be more clear when labs with less prosaic safeguards were not up to snuff. If it's true that lab safeguard strength is proportional to how safety-minded the lab is, this would help to the extent this matters and gives safety practices more leverage.
 	3. There's also a perverse counter-counterargument here where this effect would increase warning shot likelihood and hence help society prepare for "warning" shots that we couldn't survive.
 2. But China? 
-	1. This argument applies to any pacing proposal, and high-level tradeoffs between creating space between the US and China and pacing are visited more in depth elsewhere.[^china-pacing] But it seems that China is more diffusion-focused, and is probably doesn't have as large of a internal/external gap.
+	1. This argument applies to any pacing proposal, and high-level tradeoffs between creating space between the US and China and pacing are visited more in depth elsewhere.[^china-pacing] But it seems that China is more diffusion-focused, and probably doesn't have as large of a internal/external gap.
 
 
 [^anthropic-internal-use]: Tom Cunningham, Nate Rush, Parker Whitfill, and Hjalmar Wijk, [“Independent Assessment of AI R&D Acceleration at Anthropic in October 2026”](https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/#benchmark-scores-aeci), METR, November 5, 2026. The benchmark appendix explains that METR selected unreleased snapshots with substantial use inside Anthropic and dated them by when most employees gained access.
