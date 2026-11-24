@@ -1,6 +1,6 @@
 {% extends "_blog-base.html.j2" %}
 {% block content %}
-  <header class="blog-heading"><h1>Blog</h1></header>
+  <header class="blog-heading"><h1>Blog</h1><a href="#quotes">Quotes</a></header>
   <ol class="blog-list">
     {% for post in posts %}
     <li class="blog-entry">
@@ -9,4 +9,13 @@
     </li>
     {% endfor %}
   </ol>
+  <section class="blog-quotes" aria-labelledby="quotes">
+    <h2 id="quotes">Quotes</h2>
+    <figure>
+      <blockquote cite="https://paulgraham.com/vb.html">
+        <p>One heuristic for distinguishing stuff that matters is to ask yourself whether you’ll care about it in the future. Fake stuff that matters usually has a sharp peak of seeming to matter. That’s how it tricks you. The area under the curve is small, but its shape jabs into your consciousness like a pin.</p>
+      </blockquote>
+      <figcaption>Paul Graham, <cite><a href="https://paulgraham.com/vb.html">Life is Short</a></cite></figcaption>
+    </figure>
+  </section>
 {% endblock %}

@@ -11,6 +11,13 @@
 .blog-entry time { color: var(--ink-soft); font-size: 18px; }
 .blog-entry h2 { margin: 0; font-size: clamp(30px, 4vw, 52px); line-height: 1.15; }
 .blog-entry h2 a { text-decoration-thickness: 1px; text-underline-offset: .13em; }
+.blog-heading > a { display: inline-block; margin-top: 8px; font-size: 18px; }
+.blog-quotes { margin-top: clamp(48px, 8vw, 96px); padding-top: 32px; border-top: 1px solid var(--rule); }
+.blog-quotes h2 { scroll-margin-top: 115px; }
+.blog-quotes figure { margin: 24px 0 0; max-width: 42rem; }
+.blog-quotes blockquote { margin: 0; padding-left: 20px; border-left: 2px solid var(--rule); font-size: 21px; line-height: 1.55; }
+.blog-quotes blockquote p { margin: 0; }
+.blog-quotes figcaption { margin: 12px 0 0 22px; color: var(--ink-soft); }
 .blog-article { max-width: 760px; margin: 0 auto; }
 .back-to-blog { font-family: Karrik, sans-serif; font-size: 20px; }
 .article-heading h1 { margin: 28px 0 26px; font-size: clamp(46px, 6vw, 76px); line-height: 1.06; overflow-wrap: anywhere; }
