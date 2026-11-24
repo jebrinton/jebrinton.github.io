@@ -4,6 +4,9 @@ date: 2026-11-23
 authors: [Jacob Brinton]
 source_url: https://www.lesswrong.com/posts/Jtqux7K7N2sczpmQH/if-it-s-not-safe-for-the-public-it-s-not-safe-for-ai-r-and-d
 source_name: LessWrong
+crossposts:
+- name: Substack
+  url: https://jebrinton.substack.com/p/if-its-not-safe-for-the-public-its
 ---
 
 
