@@ -6,9 +6,7 @@ description: Jacob Brinton on AI risk, writing, skiing, and favorite places.
 
 # About
 
-I work on AI risk. Humanity can usher in an unprecedented era of innovation and prosperity if we can secure the development of superintelligence. I cofounded [Lateral Workshop](https://www.lateralworkshop.org/), [write on LessWrong](https://www.lesswrong.com/users/jacob-brinton), and researched [how language models translate](https://aclanthology.org/2026.emnlp-main.2470/).
-
-In 2022 I joined [Utah State’s GASRATS satellite team](https://engineering.usu.edu/news/main-feed/2024/usu-club-prepares-to-send-cubesat-into-space-via-nasa-initiative), where I helped prototype antenna hardware. I also raced mountain bikes and produced [an award-winning music video](https://www.youtube.com/watch?v=dOnrbERwjMc). My lifelong passion is skiing in Alta, Utah. I also like typewriting and crosswords.
+I work on AI risk. Humanity can usher in an unprecedented era of innovation and prosperity if we can secure the development of superintelligence. I cofounded [Lateral Workshop](https://www.lateralworkshop.org/), write [here](https://www.lesswrong.com/users/jacob-brinton), and researched [how language models translate](https://aclanthology.org/2026.emnlp-main.2470/). Previously I [worked on satellites](https://engineering.usu.edu/news/main-feed/2024/usu-club-prepares-to-send-cubesat-into-space-via-nasa-initiative), raced mountain bikes, and produced [an award-winning music video](https://www.youtube.com/watch?v=dOnrbERwjMc). My lifelong passion is skiing in Alta, Utah. I also like typewriting and crosswords.
 
 ## Favorites
 
@@ -34,20 +32,14 @@ Eliezer Yudkowsky, [Feeling Rational](https://www.lesswrong.com/posts/SqF8cHjJv4
 ### Places
 
 - Alta, Utah
-- Grand Teton National Park, Wyoming
+- Teton National Park
 - Madrid, Spain
 - Istanbul, Turkey
-- Glacier National Park, Montana
-- Boston, Massachusetts
+- Glacier National Park
+- Boston, USA
 - The Alaskan Panhandle
-
-### Where I’ve lived and traveled
 
 <figure class="travel-map">
   <figcaption><span class="travel-map__lived">Lived in</span><span class="travel-map__visited">Visited</span></figcaption>
-  <a href="assets/images/travel-map.svg" aria-label="Open the travel map at full size"><img src="assets/images/travel-map.svg" width="1200" height="535" alt="World map with U.S. state boundaries. Spain and six states are forest green. The other 44 states and countries visited are blue. Full list below."></a>
+  <a href="assets/images/travel-map.svg" title="Open map at full size"><img src="assets/images/travel-map.svg" width="1200" height="535" alt="Travel map. Lived in Spain, Utah, Montana, Wisconsin, Maryland, Massachusetts, and California. Visited all 50 U.S. states. Open the full-size map to explore."></a>
 </figure>
-
-**Lived in** Spain and the United States (Utah, Montana, Wisconsin, Maryland, Massachusetts, and California).
-
-**Visited** All 50 U.S. states, the Bahamas, Belize, Canada, Croatia, France, Greece, Honduras, Iceland, Italy, Mexico, Montenegro, the Netherlands, Portugal, Russia, Slovenia, South Korea, Sweden, Turkey, the United Kingdom, and Vatican City.
